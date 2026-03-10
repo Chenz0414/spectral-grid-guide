@@ -99,6 +99,7 @@ export const categories: Category[] = [
   {
     id: "ai-code",
     name: "AI 编程工具",
+    icon: "Code",
     tools: [
       { id: "45", title: "代码生成", description: "AI 根据自然语言描述自动生成高质量代码", icon: "💻", tags: ["代码", "生成"], slug: "code-gen" },
       { id: "46", title: "代码审查", description: "AI 自动检测代码 Bug 和潜在安全问题", icon: "🔍", tags: ["审查", "安全"], slug: "code-review" },

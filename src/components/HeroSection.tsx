@@ -1,6 +1,7 @@
 import { Search, Sparkles } from "lucide-react";
 import { useState } from "react";
 
+
 export function HeroSection() {
   const [query, setQuery] = useState("");
 

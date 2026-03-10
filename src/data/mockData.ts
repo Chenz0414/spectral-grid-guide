@@ -54,6 +54,7 @@ export const categories: Category[] = [
   {
     id: "ai-video",
     name: "AI 视频工具",
+    icon: "Film",
     tools: [
       { id: "21", title: "AI 视频生成", description: "输入文字脚本即可自动生成完整短视频", icon: "🎬", tags: ["视频", "生成"], slug: "video-gen" },
       { id: "22", title: "智能剪辑", description: "AI 自动识别精彩片段并完成粗剪", icon: "✂️", tags: ["剪辑", "自动化"], slug: "smart-edit" },

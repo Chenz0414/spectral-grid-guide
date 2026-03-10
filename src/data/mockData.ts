@@ -37,6 +37,7 @@ export const categories: Category[] = [
   {
     id: "ai-image",
     name: "AI 图像工具",
+    icon: "Image",
     tools: [
       { id: "11", title: "AI 绘画", description: "输入文字描述即可生成高质量艺术画作", icon: "🎨", tags: ["绘画", "生成"], slug: "ai-painting" },
       { id: "12", title: "图片增强", description: "一键提升图片清晰度和画质，支持超分辨率放大", icon: "📸", tags: ["增强", "超分"], slug: "image-enhance" },

@@ -1,7 +1,11 @@
 import { categories } from "@/data/mockData";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles, Briefcase, Image, Film, Headphones, PenTool, Code } from "lucide-react";
 import { useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
+
+const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  Briefcase, Image, Film, Headphones, PenTool, Code,
+};
 
 interface MobileNavProps {
   activeCategory: string;
@@ -34,19 +38,23 @@ export function MobileNav({ activeCategory, onCategoryClick }: MobileNavProps) {
       </div>
       {open && (
         <div className="px-4 pb-4 space-y-0.5 border-t border-border/60 pt-3">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => handleClick(cat.id)}
-              className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${
-                activeCategory === cat.id
-                  ? "bg-menu-selected text-title glow-sm"
-                  : "text-body2 hover:bg-hover-bg"
-              }`}
-            >
-              {cat.name}
-            </button>
-          ))}
+          {categories.map((cat) => {
+            const IconComp = iconMap[cat.icon];
+            return (
+              <button
+                key={cat.id}
+                onClick={() => handleClick(cat.id)}
+                className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer flex items-center gap-2.5 ${
+                  activeCategory === cat.id
+                    ? "bg-menu-selected text-title glow-sm"
+                    : "text-body2 hover:bg-hover-bg"
+                }`}
+              >
+                {IconComp && <IconComp size={16} className="shrink-0" />}
+                <span>{cat.name}</span>
+              </button>
+            );
+          })}
         </div>
       )}
     </div>

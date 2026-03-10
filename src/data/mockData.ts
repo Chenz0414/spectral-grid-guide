@@ -84,6 +84,7 @@ export const categories: Category[] = [
   {
     id: "ai-writing",
     name: "AI 写作工具",
+    icon: "PenTool",
     tools: [
       { id: "37", title: "AI 文案助手", description: "一键生成营销文案、广告语和社媒内容", icon: "✍️", tags: ["文案", "营销"], slug: "copywriting" },
       { id: "38", title: "小说创作", description: "AI 辅助构思情节、人物和世界观设定", icon: "📖", tags: ["小说", "创作"], slug: "novel-writer" },

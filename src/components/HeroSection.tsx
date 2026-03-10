@@ -24,15 +24,15 @@ export function HeroSection() {
         </p>
 
         <div className="relative max-w-lg mx-auto group">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 to-[#6FD6B4]/20 rounded-2xl blur-md opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/30 to-[#6FD6B4]/30 rounded-2xl blur-md opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
           <div className="relative">
-            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-body-desc" />
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-body-desc group-focus-within:text-primary transition-colors duration-300" />
             <input
               type="text"
               placeholder="搜索 AI 工具..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-card border border-border text-title text-sm placeholder:text-body-desc focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40 transition-all duration-300 glass-card"
+              className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-card/80 border border-border/80 shadow-sm text-title text-sm placeholder:text-body-desc focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 hover:border-primary/30 hover:shadow-md transition-all duration-300 glass-card"
             />
           </div>
         </div>

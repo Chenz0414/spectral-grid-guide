@@ -2,7 +2,9 @@ import { categories } from "@/data/mockData";
 import { ThemeToggle } from "./ThemeToggle";
 import { Sparkles, PanelLeftClose, PanelLeftOpen, Briefcase, Image, Film, Headphones, PenTool, Code } from "lucide-react";
 
-const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+import type { LucideIcon } from "lucide-react";
+
+const iconMap: Record<string, LucideIcon> = {
   Briefcase,
   Image,
   Film,

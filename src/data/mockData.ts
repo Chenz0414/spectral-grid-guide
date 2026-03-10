@@ -10,6 +10,7 @@ export interface Tool {
 export interface Category {
   id: string;
   name: string;
+  icon: string;
   tools: Tool[];
 }
 
@@ -19,6 +20,7 @@ export const categories: Category[] = [
   {
     id: "ai-office",
     name: "AI 办公工具",
+    icon: "Briefcase",
     tools: [
       { id: "1", title: "PDF 转 Word", description: "智能识别 PDF 内容并精准转换为可编辑的 Word 文档", icon: "📄", tags: ["文档", "转换"], slug: "pdf-to-word" },
       { id: "2", title: "AI 智能摘要", description: "一键提取长文档核心内容，生成结构化摘要", icon: "📝", tags: ["摘要", "效率"], slug: "ai-summary" },
@@ -35,6 +37,7 @@ export const categories: Category[] = [
   {
     id: "ai-image",
     name: "AI 图像工具",
+    icon: "Image",
     tools: [
       { id: "11", title: "AI 绘画", description: "输入文字描述即可生成高质量艺术画作", icon: "🎨", tags: ["绘画", "生成"], slug: "ai-painting" },
       { id: "12", title: "图片增强", description: "一键提升图片清晰度和画质，支持超分辨率放大", icon: "📸", tags: ["增强", "超分"], slug: "image-enhance" },
@@ -51,6 +54,7 @@ export const categories: Category[] = [
   {
     id: "ai-video",
     name: "AI 视频工具",
+    icon: "Film",
     tools: [
       { id: "21", title: "AI 视频生成", description: "输入文字脚本即可自动生成完整短视频", icon: "🎬", tags: ["视频", "生成"], slug: "video-gen" },
       { id: "22", title: "智能剪辑", description: "AI 自动识别精彩片段并完成粗剪", icon: "✂️", tags: ["剪辑", "自动化"], slug: "smart-edit" },
@@ -65,6 +69,7 @@ export const categories: Category[] = [
   {
     id: "ai-audio",
     name: "AI 音频工具",
+    icon: "Headphones",
     tools: [
       { id: "29", title: "AI 配音", description: "多种逼真人声，支持情感语调调节", icon: "🔊", tags: ["配音", "语音"], slug: "ai-voiceover" },
       { id: "30", title: "音乐生成", description: "AI 根据描述自动作曲，支持多种音乐风格", icon: "🎵", tags: ["音乐", "创作"], slug: "music-gen" },
@@ -79,6 +84,7 @@ export const categories: Category[] = [
   {
     id: "ai-writing",
     name: "AI 写作工具",
+    icon: "PenTool",
     tools: [
       { id: "37", title: "AI 文案助手", description: "一键生成营销文案、广告语和社媒内容", icon: "✍️", tags: ["文案", "营销"], slug: "copywriting" },
       { id: "38", title: "小说创作", description: "AI 辅助构思情节、人物和世界观设定", icon: "📖", tags: ["小说", "创作"], slug: "novel-writer" },
@@ -93,6 +99,7 @@ export const categories: Category[] = [
   {
     id: "ai-code",
     name: "AI 编程工具",
+    icon: "Code",
     tools: [
       { id: "45", title: "代码生成", description: "AI 根据自然语言描述自动生成高质量代码", icon: "💻", tags: ["代码", "生成"], slug: "code-gen" },
       { id: "46", title: "代码审查", description: "AI 自动检测代码 Bug 和潜在安全问题", icon: "🔍", tags: ["审查", "安全"], slug: "code-review" },

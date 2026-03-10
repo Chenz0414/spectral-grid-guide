@@ -3,7 +3,6 @@ import { useState } from "react";
 
 export function HeroSection() {
   const [query, setQuery] = useState("");
-  const [focused, setFocused] = useState(false);
 
   return (
     <section className="relative px-4 md:px-8 pt-12 pb-10 md:pt-20 md:pb-14 hero-gradient overflow-hidden">

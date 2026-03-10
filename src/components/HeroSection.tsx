@@ -3,7 +3,6 @@ import { useState } from "react";
 
 export function HeroSection() {
   const [query, setQuery] = useState("");
-  const [focused, setFocused] = useState(false);
 
   return (
     <section className="relative px-4 md:px-8 pt-12 pb-10 md:pt-20 md:pb-14 hero-gradient overflow-hidden">
@@ -25,22 +24,20 @@ export function HeroSection() {
         </p>
 
         <div className="relative max-w-lg mx-auto group">
-          {/* Outer glow on focus */}
-          <div className={`absolute -inset-1 rounded-2xl blur-lg transition-opacity duration-700 ${focused ? 'opacity-100' : 'opacity-0'}`}
+          {/* Outer glow */}
+          <div className="absolute -inset-1 rounded-2xl blur-lg opacity-100"
             style={{ background: 'linear-gradient(135deg, rgba(82,82,229,0.35), rgba(111,214,180,0.35))' }}
           />
 
           {/* Animated gradient border */}
           <div className="relative p-[1.5px] rounded-xl search-border-animate overflow-hidden">
             <div className="relative rounded-[10px] bg-card/90 glass-card">
-              <Search size={18} className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300 ${focused ? 'text-primary' : 'text-body-desc'}`} />
+              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-primary transition-colors duration-300" />
               <input
                 type="text"
                 placeholder="搜索 AI 工具..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
                 className="w-full pl-11 pr-4 py-3.5 rounded-[10px] bg-transparent text-title text-sm placeholder:text-body-desc focus:outline-none transition-all duration-300"
               />
             </div>

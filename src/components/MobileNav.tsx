@@ -1,5 +1,5 @@
 import { categories } from "@/data/mockData";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -17,9 +17,14 @@ export function MobileNav({ activeCategory, onCategoryClick }: MobileNavProps) {
   };
 
   return (
-    <div className="md:hidden sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
+    <div className="md:hidden sticky top-0 z-50 bg-card/80 glass border-b border-border/60">
       <div className="flex items-center justify-between px-4 py-3">
-        <h1 className="text-lg font-bold gradient-text">Rita</h1>
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-[#6FD6B4] flex items-center justify-center">
+            <Sparkles size={14} className="text-primary-foreground" />
+          </div>
+          <h1 className="text-lg font-bold gradient-text">Rita</h1>
+        </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <button onClick={() => setOpen(!open)} className="p-2 rounded-lg hover:bg-hover-bg transition-colors cursor-pointer">
@@ -28,14 +33,14 @@ export function MobileNav({ activeCategory, onCategoryClick }: MobileNavProps) {
         </div>
       </div>
       {open && (
-        <div className="px-4 pb-4 space-y-1 border-t border-border pt-3">
+        <div className="px-4 pb-4 space-y-0.5 border-t border-border/60 pt-3">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => handleClick(cat.id)}
               className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer ${
                 activeCategory === cat.id
-                  ? "bg-menu-selected text-title"
+                  ? "bg-menu-selected text-title glow-sm"
                   : "text-body2 hover:bg-hover-bg"
               }`}
             >

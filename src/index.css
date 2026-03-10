@@ -248,4 +248,31 @@
   .section-label {
     @apply text-[11px] font-semibold uppercase tracking-[0.15em] text-body-desc;
   }
+
+  @keyframes border-rotate {
+    0% { --border-angle: 0deg; }
+    100% { --border-angle: 360deg; }
+  }
+
+  .search-border-animate {
+    background: linear-gradient(var(--background), var(--background)) padding-box,
+                conic-gradient(
+                  from var(--border-angle, 0deg),
+                  hsl(var(--border)) 0%,
+                  hsl(240 73.9% 61%) 25%,
+                  hsl(160 60% 63%) 50%,
+                  hsl(240 73.9% 61%) 75%,
+                  hsl(var(--border)) 100%
+                ) border-box;
+    border: 1.5px solid transparent;
+    animation: border-rotate 4s linear infinite;
+  }
+
+  @supports (background: conic-gradient(from 0deg, red, blue)) {
+    @property --border-angle {
+      syntax: "<angle>";
+      initial-value: 0deg;
+      inherits: false;
+    }
+  }
 }

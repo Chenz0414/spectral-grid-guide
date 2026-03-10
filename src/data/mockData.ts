@@ -20,6 +20,7 @@ export const categories: Category[] = [
   {
     id: "ai-office",
     name: "AI 办公工具",
+    icon: "Briefcase",
     tools: [
       { id: "1", title: "PDF 转 Word", description: "智能识别 PDF 内容并精准转换为可编辑的 Word 文档", icon: "📄", tags: ["文档", "转换"], slug: "pdf-to-word" },
       { id: "2", title: "AI 智能摘要", description: "一键提取长文档核心内容，生成结构化摘要", icon: "📝", tags: ["摘要", "效率"], slug: "ai-summary" },

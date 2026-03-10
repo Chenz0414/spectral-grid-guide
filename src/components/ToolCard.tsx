@@ -1,25 +1,22 @@
 import { Tool } from "@/data/mockData";
 import { Link } from "react-router-dom";
 
-// Deterministic gradient backgrounds based on tool id for visual variety
-const gradients = [
-  "from-amber-400 to-orange-500",
-  "from-sky-400 to-blue-500",
-  "from-violet-400 to-purple-600",
-  "from-emerald-400 to-teal-500",
-  "from-rose-400 to-pink-500",
-  "from-cyan-400 to-sky-500",
-  "from-fuchsia-400 to-purple-500",
-  "from-lime-400 to-green-500",
-  "from-orange-400 to-red-500",
-  "from-indigo-400 to-blue-600",
-  "from-teal-400 to-cyan-600",
-  "from-pink-400 to-rose-500",
-];
+import cover01 from "@/assets/tool-covers/cover-01.jpg";
+import cover02 from "@/assets/tool-covers/cover-02.jpg";
+import cover03 from "@/assets/tool-covers/cover-03.jpg";
+import cover04 from "@/assets/tool-covers/cover-04.jpg";
+import cover05 from "@/assets/tool-covers/cover-05.jpg";
+import cover06 from "@/assets/tool-covers/cover-06.jpg";
+import cover07 from "@/assets/tool-covers/cover-07.jpg";
+import cover08 from "@/assets/tool-covers/cover-08.jpg";
+import cover09 from "@/assets/tool-covers/cover-09.jpg";
+import cover10 from "@/assets/tool-covers/cover-10.jpg";
 
-function getGradient(id: string) {
+const covers = [cover01, cover02, cover03, cover04, cover05, cover06, cover07, cover08, cover09, cover10];
+
+function getCover(id: string) {
   const num = parseInt(id, 10) || id.charCodeAt(0);
-  return gradients[num % gradients.length];
+  return covers[num % covers.length];
 }
 
 interface ToolCardProps {
@@ -28,7 +25,7 @@ interface ToolCardProps {
 }
 
 export function ToolCard({ tool, compact }: ToolCardProps) {
-  const gradient = getGradient(tool.id);
+  const coverImg = getCover(tool.id);
 
   if (compact) {
     return (
@@ -36,12 +33,13 @@ export function ToolCard({ tool, compact }: ToolCardProps) {
         to={`/tools/${tool.slug}`}
         className="block rounded-xl bg-card border border-border/60 card-hover gradient-border cursor-pointer group relative overflow-hidden"
       >
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-shimmer pointer-events-none" />
-        <div className={`relative h-24 rounded-t-xl bg-gradient-to-br ${gradient} flex items-center justify-center overflow-hidden`}>
-          <span className="text-4xl drop-shadow-lg group-hover:scale-110 transition-transform duration-300">
-            {tool.icon}
-          </span>
-          <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-300" />
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-shimmer pointer-events-none z-10" />
+        <div className="relative h-28 rounded-t-xl overflow-hidden">
+          <img
+            src={coverImg}
+            alt={tool.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
         </div>
         <div className="relative p-3">
           <h3 className="font-semibold text-title text-sm truncate">{tool.title}</h3>
@@ -56,17 +54,15 @@ export function ToolCard({ tool, compact }: ToolCardProps) {
       to={`/tools/${tool.slug}`}
       className="block rounded-xl bg-card border border-border/60 card-hover gradient-border cursor-pointer group relative overflow-hidden"
     >
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-shimmer pointer-events-none" />
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-shimmer pointer-events-none z-10" />
 
-      {/* Visual preview area */}
-      <div className={`relative h-32 rounded-t-xl bg-gradient-to-br ${gradient} flex items-center justify-center overflow-hidden`}>
-        <span className="text-5xl drop-shadow-lg group-hover:scale-110 transition-transform duration-300 select-none">
-          {tool.icon}
-        </span>
-        {/* Decorative circles */}
-        <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-white/10" />
-        <div className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full bg-white/10" />
-        <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors duration-300" />
+      {/* Image preview */}
+      <div className="relative h-36 rounded-t-xl overflow-hidden">
+        <img
+          src={coverImg}
+          alt={tool.title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
       </div>
 
       {/* Content */}

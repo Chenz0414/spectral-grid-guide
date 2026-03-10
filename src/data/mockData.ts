@@ -69,6 +69,7 @@ export const categories: Category[] = [
   {
     id: "ai-audio",
     name: "AI 音频工具",
+    icon: "Headphones",
     tools: [
       { id: "29", title: "AI 配音", description: "多种逼真人声，支持情感语调调节", icon: "🔊", tags: ["配音", "语音"], slug: "ai-voiceover" },
       { id: "30", title: "音乐生成", description: "AI 根据描述自动作曲，支持多种音乐风格", icon: "🎵", tags: ["音乐", "创作"], slug: "music-gen" },

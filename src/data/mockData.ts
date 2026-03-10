@@ -10,6 +10,7 @@ export interface Tool {
 export interface Category {
   id: string;
   name: string;
+  icon: string;
   tools: Tool[];
 }
 

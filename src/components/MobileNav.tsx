@@ -17,9 +17,15 @@ interface MobileNavProps {
 
 export function MobileNav({ activeCategory, onCategoryClick }: MobileNavProps) {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleClick = (id: string) => {
-    onCategoryClick(id);
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: id } });
+    } else {
+      onCategoryClick(id);
+    }
     setOpen(false);
   };
 

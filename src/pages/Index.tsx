@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { categories, recentTools, popularTools } from "@/data/mockData";
 import { CategorySidebar } from "@/components/CategorySidebar";
 import { MobileNav } from "@/components/MobileNav";

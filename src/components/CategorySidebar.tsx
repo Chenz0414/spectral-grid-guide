@@ -1,6 +1,6 @@
 import { categories } from "@/data/mockData";
 import { ThemeToggle } from "./ThemeToggle";
-import { Sparkles, PanelLeftClose, PanelLeftOpen, Briefcase, Image, Film, Headphones, PenTool, Code } from "lucide-react";
+import { Sparkles, PanelLeftClose, PanelLeftOpen, Briefcase, Image, Film, Headphones, PenTool, Code, Home } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import type { LucideIcon } from "lucide-react";

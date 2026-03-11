@@ -1,9 +1,35 @@
 import { Search, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
+import { categories, Tool } from "@/data/mockData";
 
+const allTools: Tool[] = categories.flatMap((c) => c.tools);
 
 export function HeroSection() {
   const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const results = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return allTools.filter((t) =>
+      t.title.toLowerCase().includes(q) || t.tags.some((tag) => tag.toLowerCase().includes(q))
+    ).slice(0, 8);
+  }, [query]);
+
+  useEffect(() => {
+    setOpen(results.length > 0 && query.trim().length > 0);
+  }, [results, query]);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   return (
     <section className="relative px-4 md:px-8 pt-12 pb-10 md:pt-20 md:pb-14 hero-gradient overflow-hidden">
@@ -24,14 +50,14 @@ export function HeroSection() {
           Rita 为你精选数百款优质 AI 工具，助力工作效率提升
         </p>
 
-        <div className="relative max-w-lg mx-auto group">
+        <div className="relative max-w-lg mx-auto group" ref={wrapperRef}>
           {/* Outer glow */}
           <div className="absolute -inset-1 rounded-2xl blur-lg opacity-100"
             style={{ background: 'linear-gradient(135deg, rgba(82,82,229,0.35), rgba(111,214,180,0.35))' }}
           />
 
           {/* Animated gradient border */}
-          <div className="relative p-[1.5px] rounded-xl search-border-animate overflow-hidden">
+          <div className="relative p-[1.5px] rounded-xl search-border-animate overflow-visible">
             <div className="relative rounded-[10px] bg-card/90 glass-card">
               <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-primary transition-colors duration-300" />
               <input
@@ -39,9 +65,32 @@ export function HeroSection() {
                 placeholder="搜索 AI 工具..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onFocus={() => { if (results.length > 0) setOpen(true); }}
                 className="w-full pl-11 pr-4 py-3.5 rounded-[10px] bg-transparent text-title text-sm placeholder:text-body-desc focus:outline-none transition-all duration-300"
               />
             </div>
+
+            {/* Dropdown results */}
+            {open && (
+              <div className="absolute left-0 right-0 top-full mt-2 rounded-xl bg-card border border-border/60 shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                <ul className="py-1.5 max-h-80 overflow-y-auto">
+                  {results.map((tool) => (
+                    <li key={tool.id}>
+                      <button
+                        className="w-full text-left px-4 py-2.5 flex items-center gap-3 hover:bg-hover-bg transition-colors cursor-pointer"
+                        onClick={() => { setQuery(tool.title); setOpen(false); }}
+                      >
+                        <span className="text-lg shrink-0">{tool.icon}</span>
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-title truncate">{tool.title}</p>
+                          <p className="text-xs text-body2 truncate">{tool.description}</p>
+                        </div>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

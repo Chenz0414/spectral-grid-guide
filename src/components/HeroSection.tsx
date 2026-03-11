@@ -69,7 +69,7 @@ export function HeroSection() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => { if (results.length > 0) setOpen(true); }}
-                className="w-full pl-11 pr-4 py-3.5 rounded-[10px] bg-transparent text-title text-sm placeholder:text-body-desc focus:outline-none transition-all duration-300"
+                className="w-full pl-11 pr-4 py-3.5 rounded-[10px] bg-transparent text-title text-sm placeholder:text-body-desc outline-none ring-0 border-none shadow-none transition-all duration-300"
               />
             </div>
             {open && (

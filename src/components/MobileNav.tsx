@@ -4,7 +4,6 @@ import type { LucideIcon } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
-import { ThemeToggle } from "./ThemeToggle";
 
 const iconMap: Record<string, LucideIcon> = {
   Briefcase, Image, Film, Headphones, PenTool, Code,

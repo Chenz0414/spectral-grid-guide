@@ -103,14 +103,9 @@ const CategoryPage = () => {
 
           {/* Category header */}
           <section className="px-4 md:px-8 mt-10">
-            <div className="flex items-center gap-2.5 mb-3">
-              {category.icon && (
-                <span className="text-2xl">{category.icon}</span>
-              )}
-              <h1 className="text-2xl md:text-3xl font-extrabold text-title tracking-tight">
-                {meta?.title || category.name}
-              </h1>
-            </div>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-title tracking-tight mb-3">
+              {meta?.title || category.name}
+            </h1>
             {meta && (
               <p className="text-sm md:text-base text-body2 leading-relaxed max-w-3xl mb-8">
                 {meta.description}

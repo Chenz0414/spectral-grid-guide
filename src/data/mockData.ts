@@ -186,6 +186,13 @@ export function saveRecentIds(ids: string[]) {
   notify();
 }
 
+const MAX_RECENT = 20;
+export function recordRecentTool(toolId: string) {
+  _recentIds = [toolId, ..._recentIds.filter((id) => id !== toolId)].slice(0, MAX_RECENT);
+  saveJSON(STORAGE_KEY_RECENT, _recentIds);
+  notify();
+}
+
 export function addTool(tool: Tool) {
   _tools = [..._tools, tool];
   saveJSON(STORAGE_KEY_TOOLS, _tools);

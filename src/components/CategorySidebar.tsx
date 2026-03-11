@@ -37,7 +37,7 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
   return (
     <aside
       className={`hidden md:flex flex-col border-r border-border/60 bg-card/80 glass h-screen sticky top-0 shrink-0 transition-all duration-300 ease-in-out ${
-        collapsed ? "w-[68px]" : "w-60"
+        collapsed ? "w-[68px]" : "w-[200px]"
       }`}
     >
       {/* Header */}

@@ -1,4 +1,4 @@
-import { Tool } from "@/data/mockData";
+import { Tool, recordRecentTool } from "@/data/mockData";
 
 import cover01 from "@/assets/tool-covers/cover-01.jpg";
 import cover02 from "@/assets/tool-covers/cover-02.jpg";

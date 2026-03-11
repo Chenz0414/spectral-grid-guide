@@ -405,6 +405,8 @@ const AdminPage = () => {
   const [toolForm, setToolForm] = useState<{ open: boolean; tool?: Tool }>({ open: false });
   const [catForm, setCatForm] = useState<{ open: boolean; cat?: Category }>({ open: false });
   const [search, setSearch] = useState("");
+  const [catDragId, setCatDragId] = useState<string | null>(null);
+  const [catDragOverId, setCatDragOverId] = useState<string | null>(null);
 
   const filteredTools = tools.filter((t) =>
     t.title.toLowerCase().includes(search.toLowerCase()) ||

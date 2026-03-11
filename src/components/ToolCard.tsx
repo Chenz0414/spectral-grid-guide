@@ -11,9 +11,9 @@ import cover08 from "@/assets/tool-covers/cover-08.jpg";
 import cover09 from "@/assets/tool-covers/cover-09.jpg";
 import cover10 from "@/assets/tool-covers/cover-10.jpg";
 
-const covers = [cover01, cover02, cover03, cover04, cover05, cover06, cover07, cover08, cover09, cover10];
+export const covers = [cover01, cover02, cover03, cover04, cover05, cover06, cover07, cover08, cover09, cover10];
 
-function getCover(id: string) {
+export function getDefaultCover(id: string) {
   const num = parseInt(id, 10) || id.charCodeAt(0);
   return covers[num % covers.length];
 }
@@ -24,7 +24,8 @@ interface ToolCardProps {
 }
 
 export function ToolCard({ tool, compact }: ToolCardProps) {
-  const coverImg = getCover(tool.id);
+  // Use uploaded cover if available, otherwise fallback to default
+  const coverImg = tool.coverLandscape || getDefaultCover(tool.id);
 
   const handleClick = () => {
     if (tool.url) {

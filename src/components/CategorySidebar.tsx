@@ -37,18 +37,13 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
   return (
     <aside
       className={`hidden md:flex flex-col border-r border-border/60 bg-card/80 glass h-screen sticky top-0 shrink-0 transition-all duration-300 ease-in-out ${
-        collapsed ? "w-[68px]" : "w-60"
+        collapsed ? "w-[68px]" : "w-[200px]"
       }`}
     >
       {/* Header */}
       <div className={`border-b border-border/60 flex items-center ${collapsed ? "justify-center p-3" : "p-5"}`}>
         {!collapsed && (
-          <>
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-[#6FD6B4] flex items-center justify-center">
-              <Sparkles size={16} className="text-primary-foreground" />
-            </div>
-            <h1 className="text-xl font-bold gradient-text tracking-tight ml-2.5">Rita</h1>
-          </>
+            <h1 className="text-lg font-bold text-title tracking-tight">AI工具</h1>
         )}
         {collapsed && (
           <button

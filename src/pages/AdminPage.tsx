@@ -18,7 +18,7 @@ import {
   resetToDefaults,
 } from "@/data/mockData";
 import { useTools, useCategories, usePopularIds } from "@/hooks/useData";
-import { ArrowLeft, Plus, Pencil, Trash2, Star, StarOff, RotateCcw, X, ExternalLink } from "lucide-react";
+import { ArrowLeft, Plus, Pencil, Trash2, Star, StarOff, RotateCcw, X, ExternalLink, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";

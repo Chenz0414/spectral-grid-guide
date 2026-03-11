@@ -15,6 +15,7 @@ import {
   updateCategory,
   deleteCategory,
   savePopularIds,
+  saveCategories,
   resetToDefaults,
 } from "@/data/mockData";
 import { useTools, useCategories, usePopularIds } from "@/hooks/useData";

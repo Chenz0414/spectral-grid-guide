@@ -1,5 +1,4 @@
 import { Tool } from "@/data/mockData";
-import { Link } from "react-router-dom";
 
 import cover01 from "@/assets/tool-covers/cover-01.jpg";
 import cover02 from "@/assets/tool-covers/cover-02.jpg";
@@ -27,24 +26,26 @@ interface PopularToolListProps {
 function PopularToolCard({ tool }: { tool: Tool }) {
   const coverImg = getCover(tool.id);
 
+  const handleClick = () => {
+    if (tool.url) {
+      window.open(tool.url, "_blank", "noopener,noreferrer");
+    }
+  };
+
   return (
-    <Link
-      to={`/tools/${tool.slug}`}
+    <div
+      onClick={handleClick}
       className="flex items-center gap-4 rounded-xl bg-card border border-border/60 p-3 card-hover gradient-border cursor-pointer group relative overflow-hidden"
     >
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-shimmer pointer-events-none z-10" />
       <div className="relative w-20 h-20 rounded-lg overflow-hidden shrink-0">
-        <img
-          src={coverImg}
-          alt={tool.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+        <img src={coverImg} alt={tool.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
       </div>
       <div className="relative flex-1 min-w-0">
         <h3 className="font-semibold text-title text-sm truncate">{tool.title}</h3>
         <p className="text-xs text-body-desc mt-1 line-clamp-2 leading-relaxed">{tool.description}</p>
       </div>
-    </Link>
+    </div>
   );
 }
 

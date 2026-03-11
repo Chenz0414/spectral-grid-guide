@@ -81,7 +81,7 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
               <li key={cat.id}>
                 {collapsed ? (
                   <button
-                    onClick={() => onCategoryClick(cat.id)}
+                    onClick={() => handleCategoryClick(cat.id)}
                     title={cat.name}
                     className={`w-full flex items-center justify-center p-2.5 rounded-lg transition-all duration-200 cursor-pointer ${
                       activeCategory === cat.id

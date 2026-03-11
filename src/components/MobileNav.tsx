@@ -2,6 +2,7 @@ import { categories } from "@/data/mockData";
 import { Menu, X, Sparkles, Briefcase, Image, Film, Headphones, PenTool, Code } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -15,9 +16,15 @@ interface MobileNavProps {
 
 export function MobileNav({ activeCategory, onCategoryClick }: MobileNavProps) {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleClick = (id: string) => {
-    onCategoryClick(id);
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: id } });
+    } else {
+      onCategoryClick(id);
+    }
     setOpen(false);
   };
 

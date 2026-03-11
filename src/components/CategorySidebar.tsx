@@ -1,6 +1,7 @@
 import { categories } from "@/data/mockData";
 import { ThemeToggle } from "./ThemeToggle";
 import { Sparkles, PanelLeftClose, PanelLeftOpen, Briefcase, Image, Film, Headphones, PenTool, Code } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import type { LucideIcon } from "lucide-react";
 
@@ -21,6 +22,16 @@ interface CategorySidebarProps {
 }
 
 export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, onToggleCollapse }: CategorySidebarProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleCategoryClick = (id: string) => {
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: id } });
+    } else {
+      onCategoryClick(id);
+    }
+  };
   return (
     <aside
       className={`hidden md:flex flex-col border-r border-border/60 bg-card/80 glass h-screen sticky top-0 shrink-0 transition-all duration-300 ease-in-out ${
@@ -70,7 +81,7 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
               <li key={cat.id}>
                 {collapsed ? (
                   <button
-                    onClick={() => onCategoryClick(cat.id)}
+                    onClick={() => handleCategoryClick(cat.id)}
                     title={cat.name}
                     className={`w-full flex items-center justify-center p-2.5 rounded-lg transition-all duration-200 cursor-pointer ${
                       activeCategory === cat.id
@@ -82,7 +93,7 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
                   </button>
                 ) : (
                   <button
-                    onClick={() => onCategoryClick(cat.id)}
+                    onClick={() => handleCategoryClick(cat.id)}
                     className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center gap-2.5 ${
                       activeCategory === cat.id
                         ? "bg-menu-selected text-title shadow-sm glow-sm"

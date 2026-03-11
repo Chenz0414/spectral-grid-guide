@@ -28,6 +28,7 @@ export function ToolCard({ tool, compact }: ToolCardProps) {
   const coverImg = tool.coverLandscape || getDefaultCover(tool.id);
 
   const handleClick = () => {
+    recordRecentTool(tool.id);
     if (tool.url) {
       window.open(tool.url, "_blank", "noopener,noreferrer");
     }

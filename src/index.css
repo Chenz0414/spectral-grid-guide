@@ -274,13 +274,12 @@
     outline: none !important;
     box-shadow: none !important;
   }
-  }
+}
 
-  @supports (background: conic-gradient(from 0deg, red, blue)) {
-    @property --border-angle {
-      syntax: "<angle>";
-      initial-value: 0deg;
-      inherits: false;
-    }
+@supports (background: conic-gradient(from 0deg, red, blue)) {
+  @property --border-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
   }
 }

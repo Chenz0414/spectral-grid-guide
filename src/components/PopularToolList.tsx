@@ -7,7 +7,7 @@ interface PopularToolListProps {
 }
 
 function PopularToolCard({ tool }: { tool: Tool }) {
-  const coverImg = getCover(tool.id);
+  const coverImg = tool.coverSquare || getDefaultCover(tool.id);
 
   const handleClick = () => {
     if (tool.url) {

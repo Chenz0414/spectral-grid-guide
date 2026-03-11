@@ -9,7 +9,22 @@ import { PopularToolList } from "@/components/PopularToolList";
 import { CategoryFloor } from "@/components/CategoryFloor";
 
 const Index = () => {
+  const location = useLocation();
   const [activeCategory, setActiveCategory] = useState(categories[0].id);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  useEffect(() => {
+    const scrollTo = location.state?.scrollTo;
+    if (scrollTo) {
+      setActiveCategory(scrollTo);
+      setTimeout(() => {
+        const el = document.getElementById(scrollTo);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
+      // Clear the state
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const handleCategoryClick = useCallback((id: string) => {

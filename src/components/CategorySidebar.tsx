@@ -93,7 +93,7 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
                   </button>
                 ) : (
                   <button
-                    onClick={() => onCategoryClick(cat.id)}
+                    onClick={() => handleCategoryClick(cat.id)}
                     className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center gap-2.5 ${
                       activeCategory === cat.id
                         ? "bg-menu-selected text-title shadow-sm glow-sm"

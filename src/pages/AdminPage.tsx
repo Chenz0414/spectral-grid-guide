@@ -510,36 +510,13 @@ const AdminPage = () => {
 
         {/* Popular Tab */}
         {tab === "popular" && (
-          <div>
-            <p className="text-sm text-body2 mb-4">点击星标切换热门工具状态，热门工具会显示在首页「🔥 热门工具」区域。</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {tools.map((tool) => {
-                const isPopular = popularIds.includes(tool.id);
-                return (
-                  <div
-                    key={tool.id}
-                    onClick={() => togglePopular(tool.id)}
-                    className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
-                      isPopular
-                        ? "bg-primary/5 border-primary/30"
-                        : "bg-card border-border/60 hover:bg-hover-bg"
-                    }`}
-                  >
-                    <span className="text-lg">{tool.icon}</span>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-title truncate">{tool.title}</p>
-                      <p className="text-xs text-body-desc truncate">{getCategoryNames(tool.categoryIds)}</p>
-                    </div>
-                    {isPopular ? (
-                      <Star size={16} className="text-yellow-500 fill-yellow-500 shrink-0" />
-                    ) : (
-                      <StarOff size={16} className="text-body-desc shrink-0" />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <PopularManager
+            tools={tools}
+            popularIds={popularIds}
+            togglePopular={togglePopular}
+            getCategoryNames={getCategoryNames}
+            onReorder={(ids) => { savePopularIds(ids); toast.success("排序已更新"); }}
+          />
         )}
       </div>
 

@@ -4,6 +4,7 @@ import { CategorySidebar } from "@/components/CategorySidebar";
 import { MobileNav } from "@/components/MobileNav";
 import { HeroSection } from "@/components/HeroSection";
 import { HorizontalToolList } from "@/components/HorizontalToolList";
+import { PopularToolList } from "@/components/PopularToolList";
 import { CategoryFloor } from "@/components/CategoryFloor";
 
 const Index = () => {

@@ -1,7 +1,7 @@
 import { Category } from "@/data/mockData";
 import { ToolCard } from "./ToolCard";
 import { Link } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface CategoryFloorProps {
   category: Category;
@@ -19,9 +19,10 @@ export function CategoryFloor({ category }: CategoryFloorProps) {
         </div>
         <Link
           to={`/category/${category.id}`}
-          className="text-xs text-primary hover:text-primary/80 font-medium flex items-center gap-0.5 transition-colors cursor-pointer group"
+          className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium border border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 hover:border-primary/50 transition-all duration-300 group"
         >
-          查看更多 <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+          查看更多
+          <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform duration-300" />
         </Link>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">

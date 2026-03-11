@@ -43,7 +43,7 @@ export function HeroSection() {
       <div className="absolute top-0 left-1/4 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" />
       <div className="absolute top-10 right-1/4 w-56 h-56 bg-[#6FD6B4]/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" style={{ animationDelay: '1.5s' }} />
 
-      <div className="relative max-w-2xl mx-auto text-center">
+      <div className="relative max-w-3xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-card-secondary/80 border border-border/50 mb-6 glass">
           <Sparkles size={14} className="text-primary" />
           <span className="text-xs font-medium text-body2">智能发现，效率倍增</span>
@@ -56,7 +56,7 @@ export function HeroSection() {
           Rita 为你精选数百款优质 AI 工具，助力工作效率提升
         </p>
 
-        <div className="relative max-w-xl mx-auto group" ref={wrapperRef}>
+        <div className="relative mx-auto group" style={{ maxWidth: '800px' }} ref={wrapperRef}>
           <div className="absolute -inset-1 rounded-2xl blur-lg opacity-60 dark:opacity-40"
             style={{ background: 'linear-gradient(135deg, rgba(82,82,229,0.35), rgba(111,214,180,0.35))' }}
           />

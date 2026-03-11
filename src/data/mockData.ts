@@ -10,6 +10,8 @@ export interface Tool {
   url: string;
   coverType: CoverType;
   categoryIds: string[];
+  coverLandscape?: string;
+  coverSquare?: string;
 }
 
 export interface Category {

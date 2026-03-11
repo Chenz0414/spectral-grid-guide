@@ -10,6 +10,7 @@ function PopularToolCard({ tool }: { tool: Tool }) {
   const coverImg = tool.coverSquare || getDefaultCover(tool.id);
 
   const handleClick = () => {
+    recordRecentTool(tool.id);
     if (tool.url) {
       window.open(tool.url, "_blank", "noopener,noreferrer");
     }

@@ -1,10 +1,11 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { categories } from "@/data/mockData";
 import { CategorySidebar } from "@/components/CategorySidebar";
 import { MobileNav } from "@/components/MobileNav";
+import { HeroSection } from "@/components/HeroSection";
 import { ToolCard } from "@/components/ToolCard";
-import { Search, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 const seoDescriptions: Record<string, { heading: string; paragraphs: string[] }> = {
   "ai-office": {
@@ -54,7 +55,6 @@ const seoDescriptions: Record<string, { heading: string; paragraphs: string[] }>
 const CategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [query, setQuery] = useState("");
 
   const category = useMemo(
     () => categories.find((c) => c.id === categoryId),
@@ -62,22 +62,6 @@ const CategoryPage = () => {
   );
 
   const activeCategory = categoryId || categories[0].id;
-
-  const handleCategoryClick = useCallback((id: string) => {
-    // Navigate handled by Link in sidebar
-  }, []);
-
-  const filteredTools = useMemo(() => {
-    if (!category) return [];
-    if (!query.trim()) return category.tools;
-    const q = query.toLowerCase();
-    return category.tools.filter(
-      (t) =>
-        t.title.toLowerCase().includes(q) ||
-        t.description.toLowerCase().includes(q) ||
-        t.tags.some((tag) => tag.toLowerCase().includes(q))
-    );
-  }, [category, query]);
 
   const seo = categoryId ? seoDescriptions[categoryId] : null;
 
@@ -98,69 +82,35 @@ const CategoryPage = () => {
     <div className="flex min-h-screen bg-background">
       <CategorySidebar
         activeCategory={activeCategory}
-        onCategoryClick={handleCategoryClick}
+        onCategoryClick={() => {}}
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
       />
       <div className="flex-1 flex flex-col min-w-0">
-        <MobileNav activeCategory={activeCategory} onCategoryClick={handleCategoryClick} />
+        <MobileNav activeCategory={activeCategory} onCategoryClick={() => {}} />
         <main className="flex-1 overflow-y-auto pb-12">
-          {/* Search area */}
-          <section className="relative px-4 md:px-8 pt-8 pb-6 hero-gradient overflow-hidden">
-            <div className="absolute top-0 left-1/4 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" />
-            <div className="relative max-w-2xl mx-auto">
-              <div className="flex items-center gap-3 mb-6">
-                <Link
-                  to="/"
-                  className="inline-flex items-center gap-1.5 text-sm text-body2 hover:text-title transition-colors"
-                >
-                  <ArrowLeft size={16} />
-                  首页
-                </Link>
-                <span className="text-border">/</span>
-                <span className="text-sm font-medium text-title">{category.name}</span>
-              </div>
-
-              <h1 className="text-2xl md:text-3xl font-extrabold text-title tracking-tight mb-6">
-                {category.icon && <span className="mr-2">{categories.find(c => c.id === category.id)?.tools[0]?.icon}</span>}
-                {category.name}
-              </h1>
-
-              <div className="relative max-w-lg group">
-                <div className="absolute -inset-1 rounded-2xl blur-lg opacity-100"
-                  style={{ background: 'linear-gradient(135deg, rgba(82,82,229,0.35), rgba(111,214,180,0.35))' }}
-                />
-                <div className="relative p-[1.5px] rounded-xl search-border-animate overflow-hidden">
-                  <div className="relative rounded-[10px] bg-card/90 glass-card">
-                    <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-primary transition-colors duration-300" />
-                    <input
-                      type="text"
-                      placeholder={`在 ${category.name} 中搜索...`}
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3.5 rounded-[10px] bg-transparent text-title text-sm placeholder:text-body-desc focus:outline-none transition-all duration-300"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          <HeroSection />
 
           {/* Tools grid */}
           <section className="px-4 md:px-8 mt-8">
+            {/* Breadcrumb */}
+            <div className="flex items-center gap-1.5 text-sm text-body2 mb-4">
+              <Link to="/" className="inline-flex items-center gap-1.5 hover:text-title transition-colors">
+                <ArrowLeft size={14} />
+                首页
+              </Link>
+              <span className="text-border">/</span>
+              <span className="font-medium text-title">{category.name}</span>
+            </div>
+
             <p className="text-sm text-body2 mb-5">
-              共 <span className="font-semibold text-title">{filteredTools.length}</span> 款工具
+              共 <span className="font-semibold text-title">{category.tools.length}</span> 款工具
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-              {filteredTools.map((tool) => (
+              {category.tools.map((tool) => (
                 <ToolCard key={tool.id} tool={tool} />
               ))}
             </div>
-            {filteredTools.length === 0 && (
-              <div className="text-center py-16 text-body-desc text-sm">
-                未找到匹配的工具
-              </div>
-            )}
           </section>
 
           {/* SEO content */}

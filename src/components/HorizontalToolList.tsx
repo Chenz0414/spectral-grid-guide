@@ -15,7 +15,7 @@ export function HorizontalToolList({ title, tools }: HorizontalToolListProps) {
       </div>
       <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-4 pt-2 -mt-2">
         {tools.map((tool) => (
-          <div key={tool.id} className="min-w-[180px] md:min-w-[220px] shrink-0">
+          <div key={tool.id} className="w-[180px] md:w-[220px] shrink-0">
             <ToolCard tool={tool} compact />
           </div>
         ))}

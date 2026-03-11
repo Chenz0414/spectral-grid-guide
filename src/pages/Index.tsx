@@ -25,7 +25,6 @@ const Index = () => {
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const handleCategoryClick = useCallback((id: string) => {
     setActiveCategory(id);

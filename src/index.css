@@ -266,6 +266,14 @@
                 ) border-box;
     border: 1.5px solid transparent;
     animation: border-rotate 4s linear infinite;
+    outline: none !important;
+  }
+
+  .search-border-animate *:focus,
+  .search-border-animate *:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
   }
 
   @supports (background: conic-gradient(from 0deg, red, blue)) {

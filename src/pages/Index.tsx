@@ -4,6 +4,7 @@ import { CategorySidebar } from "@/components/CategorySidebar";
 import { MobileNav } from "@/components/MobileNav";
 import { HeroSection } from "@/components/HeroSection";
 import { HorizontalToolList } from "@/components/HorizontalToolList";
+import { PopularToolList } from "@/components/PopularToolList";
 import { CategoryFloor } from "@/components/CategoryFloor";
 
 const Index = () => {
@@ -31,7 +32,7 @@ const Index = () => {
         <main className="flex-1 overflow-y-auto pb-12">
           <HeroSection />
           <HorizontalToolList title="🕐 最近使用" tools={recentTools} />
-          <HorizontalToolList title="🔥 热门工具" tools={popularTools} />
+          <PopularToolList title="🔥 热门工具" tools={popularTools} />
           <div className="mt-4">
             {categories.map((cat) => (
               <CategoryFloor key={cat.id} category={cat} />

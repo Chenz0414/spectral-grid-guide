@@ -61,7 +61,7 @@ export function HeroSection() {
             style={{ background: 'linear-gradient(135deg, rgba(82,82,229,0.35), rgba(111,214,180,0.35))' }}
           />
           <div className="relative p-[1.5px] rounded-xl search-border-animate overflow-visible">
-            <div className="relative rounded-[10px] bg-card/90 glass-card">
+            <div className="relative rounded-[10px] bg-card/90 backdrop-blur-xl">
               <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-primary transition-colors duration-300" />
               <input
                 type="text"

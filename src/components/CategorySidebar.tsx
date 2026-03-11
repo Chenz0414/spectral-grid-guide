@@ -75,6 +75,26 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
       <nav className={`flex-1 overflow-y-auto py-4 ${collapsed ? "px-2" : "px-3"}`}>
         {!collapsed && <p className="section-label px-3 mb-3">分类导航</p>}
         <ul className="space-y-0.5">
+          {/* 首页 */}
+          <li>
+            {collapsed ? (
+              <button
+                onClick={() => { navigate("/"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                title="首页"
+                className="w-full flex items-center justify-center p-2.5 rounded-lg transition-all duration-200 cursor-pointer text-body2 hover:bg-hover-bg hover:text-title"
+              >
+                <Home size={20} />
+              </button>
+            ) : (
+              <button
+                onClick={() => { navigate("/"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                className="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center gap-2.5 text-body2 hover:bg-hover-bg hover:text-title"
+              >
+                <Home size={16} className="shrink-0" />
+                <span>首页</span>
+              </button>
+            )}
+          </li>
           {categories.map((cat) => {
             const IconComp = iconMap[cat.icon];
             return (

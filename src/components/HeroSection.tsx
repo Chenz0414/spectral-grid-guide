@@ -43,7 +43,7 @@ export function HeroSection() {
       <div className="absolute top-0 left-1/4 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" />
       <div className="absolute top-10 right-1/4 w-56 h-56 bg-[#6FD6B4]/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" style={{ animationDelay: '1.5s' }} />
 
-      <div className="relative max-w-2xl mx-auto text-center">
+      <div className="relative max-w-3xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-card-secondary/80 border border-border/50 mb-6 glass">
           <Sparkles size={14} className="text-primary" />
           <span className="text-xs font-medium text-body2">智能发现，效率倍增</span>

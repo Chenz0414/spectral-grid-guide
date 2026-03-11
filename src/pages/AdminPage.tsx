@@ -613,13 +613,42 @@ const AdminPage = () => {
                 <Plus size={16} />
                 新建分类
               </Button>
+              <span className="text-xs text-body-desc">拖拽排序 · 影响侧边栏展示顺序</span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {categories.map((cat) => {
+            <div className="space-y-1.5">
+              {categories.map((cat, index) => {
                 const toolCount = tools.filter((t) => t.categoryIds.includes(cat.id)).length;
                 return (
-                  <div key={cat.id} className="bg-card border border-border/60 rounded-xl p-4 flex items-center justify-between">
-                    <div>
+                  <div
+                    key={cat.id}
+                    draggable
+                    onDragStart={() => setCatDragId(cat.id)}
+                    onDragOver={(e) => { e.preventDefault(); if (catDragId && catDragId !== cat.id) setCatDragOverId(cat.id); }}
+                    onDrop={() => {
+                      if (!catDragId || catDragId === cat.id) { setCatDragId(null); setCatDragOverId(null); return; }
+                      const oldIdx = categories.findIndex((c) => c.id === catDragId);
+                      const newIdx = categories.findIndex((c) => c.id === cat.id);
+                      if (oldIdx === -1 || newIdx === -1) { setCatDragId(null); setCatDragOverId(null); return; }
+                      const newCats = [...categories];
+                      const [moved] = newCats.splice(oldIdx, 1);
+                      newCats.splice(newIdx, 0, moved);
+                      saveCategories(newCats);
+                      toast.success("分类排序已更新");
+                      setCatDragId(null);
+                      setCatDragOverId(null);
+                    }}
+                    onDragEnd={() => { setCatDragId(null); setCatDragOverId(null); }}
+                    className={`bg-card border rounded-xl p-4 flex items-center gap-3 transition-all ${
+                      catDragOverId === cat.id
+                        ? "border-primary bg-primary/10"
+                        : catDragId === cat.id
+                        ? "opacity-50 border-border/40"
+                        : "border-border/60"
+                    }`}
+                  >
+                    <GripVertical size={14} className="text-body-desc cursor-grab shrink-0" />
+                    <span className="text-xs text-body-desc w-5 text-center shrink-0">{index + 1}</span>
+                    <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-title">{cat.name}</p>
                       <p className="text-xs text-body-desc mt-0.5">{cat.icon} · {toolCount} 个工具</p>
                     </div>

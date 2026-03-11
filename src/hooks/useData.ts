@@ -1,12 +1,13 @@
-import { useSyncExternalStore } from "react";
+import { useSyncExternalStore, useMemo } from "react";
 import {
   subscribe,
   getTools,
   getCategories,
-  getPopularTools,
-  getRecentTools,
-  getCategoriesWithTools,
   getPopularIds,
+  getRecentIds,
+  getToolsByCategory,
+  Tool,
+  CategoryWithTools,
 } from "@/data/mockData";
 
 export function useTools() {
@@ -17,18 +18,40 @@ export function useCategories() {
   return useSyncExternalStore(subscribe, getCategories);
 }
 
-export function usePopularTools() {
-  return useSyncExternalStore(subscribe, getPopularTools);
-}
-
-export function useRecentTools() {
-  return useSyncExternalStore(subscribe, getRecentTools);
-}
-
-export function useCategoriesWithTools() {
-  return useSyncExternalStore(subscribe, getCategoriesWithTools);
-}
-
 export function usePopularIds() {
   return useSyncExternalStore(subscribe, getPopularIds);
+}
+
+export function useRecentIds() {
+  return useSyncExternalStore(subscribe, getRecentIds);
+}
+
+export function usePopularTools(): Tool[] {
+  const tools = useTools();
+  const popularIds = usePopularIds();
+  return useMemo(
+    () => popularIds.map((id) => tools.find((t) => t.id === id)).filter(Boolean) as Tool[],
+    [tools, popularIds]
+  );
+}
+
+export function useRecentTools(): Tool[] {
+  const tools = useTools();
+  const recentIds = useRecentIds();
+  return useMemo(
+    () => recentIds.map((id) => tools.find((t) => t.id === id)).filter(Boolean) as Tool[],
+    [tools, recentIds]
+  );
+}
+
+export function useCategoriesWithTools(): CategoryWithTools[] {
+  const tools = useTools();
+  const categories = useCategories();
+  return useMemo(
+    () => categories.map((cat) => ({
+      ...cat,
+      tools: tools.filter((t) => t.categoryIds.includes(cat.id)),
+    })),
+    [tools, categories]
+  );
 }

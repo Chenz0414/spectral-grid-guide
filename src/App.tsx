@@ -33,20 +33,26 @@ function useBackfillCovers() {
 
 const queryClient = new QueryClient();
 
+const AppInner = () => {
+  useBackfillCovers();
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/category/:categoryId" element={<CategoryPage />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/category/:categoryId" element={<CategoryPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AppInner />
     </TooltipProvider>
   </QueryClientProvider>
 );

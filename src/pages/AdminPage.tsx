@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { icons } from "lucide-react";
 import {
   Tool,
   Category,
@@ -201,13 +202,18 @@ function CategoryForm({ category, onSave, onCancel }: CategoryFormProps) {
     category || { id: "", name: "", icon: "Briefcase" }
   );
 
-  const iconOptions = ["Briefcase", "Image", "Film", "Headphones", "PenTool", "Code"];
+  const iconOptions = ["Briefcase", "Image", "Film", "Headphones", "PenTool", "Code", "Globe", "Zap", "Layers", "Cpu", "MessageSquare", "BookOpen", "Palette", "Music", "Video", "Camera"];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim()) { toast.error("请填写分类名称"); return; }
-    const id = form.id || form.name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-\u4e00-\u9fff]/g, "") || crypto.randomUUID();
+    const id = form.id || crypto.randomUUID();
     onSave({ ...form, id });
+  };
+
+  const renderIcon = (name: string, size = 18) => {
+    const Icon = icons[name as keyof typeof icons];
+    return Icon ? <Icon size={size} /> : null;
   };
 
   return (
@@ -233,23 +239,18 @@ function CategoryForm({ category, onSave, onCancel }: CategoryFormProps) {
                   key={ic}
                   type="button"
                   onClick={() => setForm({ ...form, icon: ic })}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-colors ${
+                  className={`p-2.5 rounded-lg border cursor-pointer transition-colors ${
                     form.icon === ic
                       ? "bg-primary text-primary-foreground border-primary"
                       : "bg-card border-border text-body2 hover:bg-hover-bg"
                   }`}
+                  title={ic}
                 >
-                  {ic}
+                  {renderIcon(ic)}
                 </button>
               ))}
             </div>
           </div>
-          {!isEdit && (
-            <div>
-              <label className="text-sm text-body2 mb-1 block">ID（可选）</label>
-              <Input value={form.id} onChange={(e) => setForm({ ...form, id: e.target.value })} placeholder="自动生成" />
-            </div>
-          )}
           <div className="flex gap-2 pt-2">
             <Button type="submit" className="flex-1">{isEdit ? "保存" : "创建"}</Button>
             <Button type="button" variant="outline" onClick={onCancel}>取消</Button>

@@ -45,6 +45,8 @@ function ToolForm({ tool, onSave, onCancel, categories }: ToolFormProps) {
       url: "",
       coverType: "landscape" as CoverType,
       categoryIds: [],
+      coverLandscape: "",
+      coverSquare: "",
     }
   );
   const [tagInput, setTagInput] = useState(tool?.tags.join(", ") || "");
@@ -54,6 +56,8 @@ function ToolForm({ tool, onSave, onCancel, categories }: ToolFormProps) {
     if (!form.title.trim()) { toast.error("请填写工具名称"); return; }
     if (!form.url.trim()) { toast.error("请填写跳转 URL"); return; }
     if (form.categoryIds.length === 0) { toast.error("请至少选择一个分类"); return; }
+    if (!form.coverLandscape) { toast.error("请上传长图封面"); return; }
+    if (!form.coverSquare) { toast.error("请上传方图封面"); return; }
     const slug = form.slug || form.title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
     const tags = tagInput.split(/[,，]/).map((t) => t.trim()).filter(Boolean);
     onSave({ ...form, slug, tags });
@@ -66,6 +70,18 @@ function ToolForm({ tool, onSave, onCancel, categories }: ToolFormProps) {
         ? prev.categoryIds.filter((id) => id !== catId)
         : [...prev.categoryIds, catId],
     }));
+  };
+
+  const handleImageUpload = (field: "coverLandscape" | "coverSquare") => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { toast.error("请选择图片文件"); return; }
+    if (file.size > 5 * 1024 * 1024) { toast.error("图片大小不能超过 5MB"); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setForm((prev) => ({ ...prev, [field]: reader.result as string }));
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -103,23 +119,43 @@ function ToolForm({ tool, onSave, onCancel, categories }: ToolFormProps) {
             <label className="text-sm text-body2 mb-1 block">标签（逗号分隔）</label>
             <Input value={tagInput} onChange={(e) => setTagInput(e.target.value)} placeholder="标签1, 标签2" />
           </div>
-          <div>
-            <label className="text-sm text-body2 mb-1 block">封面版式</label>
-            <div className="flex gap-2">
-              {(["landscape", "square"] as CoverType[]).map((ct) => (
-                <button
-                  key={ct}
-                  type="button"
-                  onClick={() => setForm({ ...form, coverType: ct })}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-colors ${
-                    form.coverType === ct
-                      ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-card border-border text-body2 hover:bg-hover-bg"
-                  }`}
-                >
-                  {ct === "landscape" ? "长图" : "方图"}
-                </button>
-              ))}
+          {/* Cover image uploads */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm text-body2 mb-1 block">长图封面 *</label>
+              <label className="block cursor-pointer">
+                {form.coverLandscape ? (
+                  <div className="relative group rounded-lg overflow-hidden border border-border/60">
+                    <img src={form.coverLandscape} alt="长图预览" className="w-full h-24 object-cover" />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-medium">
+                      点击更换
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-full h-24 rounded-lg border-2 border-dashed border-border flex items-center justify-center text-xs text-body-desc hover:border-primary hover:text-primary transition-colors">
+                    16:9 长图
+                  </div>
+                )}
+                <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload("coverLandscape")} />
+              </label>
+            </div>
+            <div>
+              <label className="text-sm text-body2 mb-1 block">方图封面 *</label>
+              <label className="block cursor-pointer">
+                {form.coverSquare ? (
+                  <div className="relative group rounded-lg overflow-hidden border border-border/60">
+                    <img src={form.coverSquare} alt="方图预览" className="w-full h-24 object-cover" />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-medium">
+                      点击更换
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-full h-24 rounded-lg border-2 border-dashed border-border flex items-center justify-center text-xs text-body-desc hover:border-primary hover:text-primary transition-colors">
+                    1:1 方图
+                  </div>
+                )}
+                <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload("coverSquare")} />
+              </label>
             </div>
           </div>
           <div>

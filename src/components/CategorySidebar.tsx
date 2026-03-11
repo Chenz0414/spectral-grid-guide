@@ -1,6 +1,6 @@
-import { categories } from "@/data/mockData";
+import { useCategories } from "@/hooks/useData";
 import { ThemeToggle } from "./ThemeToggle";
-import { Sparkles, PanelLeftClose, PanelLeftOpen, Briefcase, Image, Film, Headphones, PenTool, Code, Home } from "lucide-react";
+import { Sparkles, PanelLeftClose, PanelLeftOpen, Briefcase, Image, Film, Headphones, PenTool, Code, Home, Settings } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import type { LucideIcon } from "lucide-react";
@@ -24,6 +24,7 @@ interface CategorySidebarProps {
 export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, onToggleCollapse }: CategorySidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
+  const categories = useCategories();
 
   const handleCategoryClick = (id: string) => {
     if (location.pathname !== "/") {
@@ -32,6 +33,7 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
       onCategoryClick(id);
     }
   };
+
   return (
     <aside
       className={`hidden md:flex flex-col border-r border-border/60 bg-card/80 glass h-screen sticky top-0 shrink-0 transition-all duration-300 ease-in-out ${
@@ -130,13 +132,26 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
         </ul>
       </nav>
 
-      {/* Pro card - only when expanded */}
-      {!collapsed && (
-        <div className="p-4 mx-3 mb-3 rounded-xl bg-gradient-to-br from-primary/10 to-[#6FD6B4]/10 border border-primary/10">
-          <p className="text-xs font-semibold text-title mb-1">Rita Pro</p>
-          <p className="text-[11px] text-body-desc leading-relaxed">解锁全部高级 AI 工具</p>
-        </div>
-      )}
+      {/* Admin link */}
+      <div className={`border-t border-border/60 ${collapsed ? "p-2" : "p-3"}`}>
+        {collapsed ? (
+          <button
+            onClick={() => navigate("/admin")}
+            title="管理配置"
+            className="w-full flex items-center justify-center p-2.5 rounded-lg transition-all duration-200 cursor-pointer text-body2 hover:bg-hover-bg hover:text-title"
+          >
+            <Settings size={20} />
+          </button>
+        ) : (
+          <button
+            onClick={() => navigate("/admin")}
+            className="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center gap-2.5 text-body2 hover:bg-hover-bg hover:text-title"
+          >
+            <Settings size={16} className="shrink-0" />
+            <span>管理配置</span>
+          </button>
+        )}
+      </div>
     </aside>
   );
 }

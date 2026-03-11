@@ -1,4 +1,4 @@
-import { Tool } from "@/data/mockData";
+import { Tool, recordRecentTool } from "@/data/mockData";
 import { getDefaultCover } from "@/components/ToolCard";
 
 interface PopularToolListProps {

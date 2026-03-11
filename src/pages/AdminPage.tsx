@@ -261,6 +261,135 @@ function CategoryForm({ category, onSave, onCancel }: CategoryFormProps) {
   );
 }
 
+// ─── Popular Manager with Drag & Drop ───
+
+interface PopularManagerProps {
+  tools: Tool[];
+  popularIds: string[];
+  togglePopular: (id: string) => void;
+  getCategoryNames: (ids: string[]) => string;
+  onReorder: (ids: string[]) => void;
+}
+
+function PopularManager({ tools, popularIds, togglePopular, getCategoryNames, onReorder }: PopularManagerProps) {
+  const [dragId, setDragId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
+
+  const popularTools = popularIds.map((id) => tools.find((t) => t.id === id)).filter(Boolean) as Tool[];
+  const nonPopularTools = tools.filter((t) => !popularIds.includes(t.id));
+
+  const handleDragStart = (id: string) => {
+    setDragId(id);
+  };
+
+  const handleDragOver = (e: React.DragEvent, id: string) => {
+    e.preventDefault();
+    if (dragId && dragId !== id) {
+      setDragOverId(id);
+    }
+  };
+
+  const handleDrop = (targetId: string) => {
+    if (!dragId || dragId === targetId) { setDragId(null); setDragOverId(null); return; }
+    const oldIndex = popularIds.indexOf(dragId);
+    const newIndex = popularIds.indexOf(targetId);
+    if (oldIndex === -1 || newIndex === -1) { setDragId(null); setDragOverId(null); return; }
+    const newIds = [...popularIds];
+    newIds.splice(oldIndex, 1);
+    newIds.splice(newIndex, 0, dragId);
+    onReorder(newIds);
+    setDragId(null);
+    setDragOverId(null);
+  };
+
+  const handleDragEnd = () => {
+    setDragId(null);
+    setDragOverId(null);
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Popular section */}
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <Star size={16} className="text-yellow-500 fill-yellow-500" />
+          <h3 className="text-sm font-semibold text-title">热门工具（{popularTools.length}）</h3>
+          <span className="text-xs text-body-desc">拖拽排序 · 影响前台展示顺序</span>
+        </div>
+        {popularTools.length === 0 ? (
+          <div className="text-center py-8 text-sm text-body-desc border border-dashed border-border rounded-xl">
+            暂无热门工具，从下方列表中点击添加
+          </div>
+        ) : (
+          <div className="space-y-1.5">
+            {popularTools.map((tool, index) => (
+              <div
+                key={tool.id}
+                draggable
+                onDragStart={() => handleDragStart(tool.id)}
+                onDragOver={(e) => handleDragOver(e, tool.id)}
+                onDrop={() => handleDrop(tool.id)}
+                onDragEnd={handleDragEnd}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border transition-all ${
+                  dragOverId === tool.id
+                    ? "border-primary bg-primary/10"
+                    : dragId === tool.id
+                    ? "opacity-50 border-border/40 bg-card"
+                    : "bg-primary/5 border-primary/30"
+                }`}
+              >
+                <GripVertical size={14} className="text-body-desc cursor-grab shrink-0" />
+                <span className="text-xs text-body-desc w-5 text-center shrink-0">{index + 1}</span>
+                <span className="text-lg shrink-0">{tool.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-title truncate">{tool.title}</p>
+                  <p className="text-xs text-body-desc truncate">{getCategoryNames(tool.categoryIds)}</p>
+                </div>
+                <button
+                  onClick={(e) => { e.stopPropagation(); togglePopular(tool.id); }}
+                  className="p-1.5 rounded-lg hover:bg-hover-bg cursor-pointer shrink-0"
+                  title="取消热门"
+                >
+                  <Star size={15} className="text-yellow-500 fill-yellow-500" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Non-popular section */}
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <StarOff size={16} className="text-body-desc" />
+          <h3 className="text-sm font-semibold text-title">未加入热门（{nonPopularTools.length}）</h3>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          {nonPopularTools.map((tool) => (
+            <div
+              key={tool.id}
+              className="flex items-center gap-3 p-3 rounded-xl border bg-card border-border/60 hover:bg-hover-bg transition-all"
+            >
+              <span className="text-lg">{tool.icon}</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-title truncate">{tool.title}</p>
+                <p className="text-xs text-body-desc truncate">{getCategoryNames(tool.categoryIds)}</p>
+              </div>
+              <button
+                onClick={() => togglePopular(tool.id)}
+                className="p-1.5 rounded-lg hover:bg-hover-bg cursor-pointer shrink-0"
+                title="设为热门"
+              >
+                <StarOff size={15} className="text-body-desc" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Admin Page ───
 
 type Tab = "tools" | "categories" | "popular";

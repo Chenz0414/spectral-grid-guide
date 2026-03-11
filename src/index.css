@@ -255,7 +255,7 @@
   }
 
   .search-border-animate {
-    background: linear-gradient(var(--background), var(--background)) padding-box,
+    background: transparent padding-box,
                 conic-gradient(
                   from var(--border-angle, 0deg),
                   hsl(var(--border)) 0%,

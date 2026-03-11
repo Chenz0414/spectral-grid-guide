@@ -22,6 +22,16 @@ interface CategorySidebarProps {
 }
 
 export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, onToggleCollapse }: CategorySidebarProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleCategoryClick = (id: string) => {
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: id } });
+    } else {
+      onCategoryClick(id);
+    }
+  };
   return (
     <aside
       className={`hidden md:flex flex-col border-r border-border/60 bg-card/80 glass h-screen sticky top-0 shrink-0 transition-all duration-300 ease-in-out ${

@@ -405,13 +405,16 @@ const AdminPage = () => {
   const [toolForm, setToolForm] = useState<{ open: boolean; tool?: Tool }>({ open: false });
   const [catForm, setCatForm] = useState<{ open: boolean; cat?: Category }>({ open: false });
   const [search, setSearch] = useState("");
+  const [filterCategoryId, setFilterCategoryId] = useState<string>("all");
   const [catDragId, setCatDragId] = useState<string | null>(null);
   const [catDragOverId, setCatDragOverId] = useState<string | null>(null);
 
-  const filteredTools = tools.filter((t) =>
-    t.title.toLowerCase().includes(search.toLowerCase()) ||
-    t.tags.some((tag) => tag.toLowerCase().includes(search.toLowerCase()))
-  );
+  const filteredTools = tools.filter((t) => {
+    const matchesSearch = t.title.toLowerCase().includes(search.toLowerCase()) ||
+      t.tags.some((tag) => tag.toLowerCase().includes(search.toLowerCase()));
+    const matchesCategory = filterCategoryId === "all" || t.categoryIds.includes(filterCategoryId);
+    return matchesSearch && matchesCategory;
+  });
 
   const handleSaveTool = (tool: Tool) => {
     const exists = tools.find((t) => t.id === tool.id);
@@ -522,6 +525,31 @@ const AdminPage = () => {
                 <Plus size={16} />
                 新建工具
               </Button>
+            </div>
+            <div className="flex flex-wrap gap-1.5 mb-4">
+              <button
+                onClick={() => setFilterCategoryId("all")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-colors ${
+                  filterCategoryId === "all"
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-card border-border text-body2 hover:bg-hover-bg"
+                }`}
+              >
+                全部
+              </button>
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setFilterCategoryId(cat.id)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-colors ${
+                    filterCategoryId === cat.id
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-card border-border text-body2 hover:bg-hover-bg"
+                  }`}
+                >
+                  {cat.name}
+                </button>
+              ))}
             </div>
             <div className="border border-border/60 rounded-xl overflow-hidden">
               <table className="w-full">

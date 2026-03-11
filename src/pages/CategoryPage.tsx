@@ -107,7 +107,7 @@ const CategoryPage = () => {
               {meta?.title || category.name}
             </h1>
             {meta && (
-              <p className="text-sm md:text-base text-body2 leading-relaxed max-w-3xl mb-8">
+              <p className="text-sm md:text-base text-body2 leading-relaxed mb-8">
                 {meta.description}
               </p>
             )}

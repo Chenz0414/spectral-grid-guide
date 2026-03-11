@@ -1,22 +1,5 @@
 import { Tool } from "@/data/mockData";
-
-import cover01 from "@/assets/tool-covers/cover-01.jpg";
-import cover02 from "@/assets/tool-covers/cover-02.jpg";
-import cover03 from "@/assets/tool-covers/cover-03.jpg";
-import cover04 from "@/assets/tool-covers/cover-04.jpg";
-import cover05 from "@/assets/tool-covers/cover-05.jpg";
-import cover06 from "@/assets/tool-covers/cover-06.jpg";
-import cover07 from "@/assets/tool-covers/cover-07.jpg";
-import cover08 from "@/assets/tool-covers/cover-08.jpg";
-import cover09 from "@/assets/tool-covers/cover-09.jpg";
-import cover10 from "@/assets/tool-covers/cover-10.jpg";
-
-const covers = [cover01, cover02, cover03, cover04, cover05, cover06, cover07, cover08, cover09, cover10];
-
-function getCover(id: string) {
-  const num = parseInt(id, 10) || id.charCodeAt(0);
-  return covers[num % covers.length];
-}
+import { getDefaultCover } from "@/components/ToolCard";
 
 interface PopularToolListProps {
   title: string;
@@ -24,7 +7,7 @@ interface PopularToolListProps {
 }
 
 function PopularToolCard({ tool }: { tool: Tool }) {
-  const coverImg = getCover(tool.id);
+  const coverImg = tool.coverSquare || getDefaultCover(tool.id);
 
   const handleClick = () => {
     if (tool.url) {

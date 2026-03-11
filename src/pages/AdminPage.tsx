@@ -397,14 +397,14 @@ const AdminPage = () => {
                     <th className="px-4 py-3 text-xs font-semibold text-body2">工具</th>
                     <th className="px-4 py-3 text-xs font-semibold text-body2 hidden md:table-cell">分类</th>
                     <th className="px-4 py-3 text-xs font-semibold text-body2 hidden lg:table-cell">URL</th>
-                    <th className="px-4 py-3 text-xs font-semibold text-body2 hidden sm:table-cell">版式</th>
+                    <th className="px-4 py-3 text-xs font-semibold text-body2 hidden sm:table-cell">封面</th>
                     <th className="px-4 py-3 text-xs font-semibold text-body2 text-right">操作</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredTools.map((tool) => (
-                    <tr key={tool.id} className="border-t border-border/40 hover:bg-hover-bg/50 transition-colors">
-                      <td className="px-4 py-3">
+                    <tr key={tool.id} className="border-t border-border/40 hover:bg-hover-bg/50 transition-colors h-16">
+                      <td className="px-4 py-2">
                         <div className="flex items-center gap-2.5">
                           <span className="text-lg">{tool.icon}</span>
                           <div>
@@ -413,21 +413,30 @@ const AdminPage = () => {
                           </div>
                         </div>
                       </td>
-                      <td className="px-4 py-3 hidden md:table-cell">
+                      <td className="px-4 py-2 hidden md:table-cell">
                         <p className="text-xs text-body2">{getCategoryNames(tool.categoryIds)}</p>
                       </td>
-                      <td className="px-4 py-3 hidden lg:table-cell">
+                      <td className="px-4 py-2 hidden lg:table-cell">
                         <a href={tool.url} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline inline-flex items-center gap-1">
                           {tool.url.replace(/^https?:\/\//, "").slice(0, 30)}
                           <ExternalLink size={10} />
                         </a>
                       </td>
-                      <td className="px-4 py-3 hidden sm:table-cell">
-                        <span className="text-xs px-2 py-0.5 rounded-full bg-card-secondary text-body2 border border-border/30">
-                          {tool.coverType === "landscape" ? "长图" : "方图"}
-                        </span>
+                      <td className="px-4 py-2 hidden sm:table-cell">
+                        <div className="flex items-center gap-2">
+                          {tool.coverLandscape ? (
+                            <img src={tool.coverLandscape} alt="长图" className="w-16 h-9 object-cover rounded border border-border/40 flex-shrink-0" />
+                          ) : (
+                            <div className="w-16 h-9 rounded border border-dashed border-border/60 flex items-center justify-center text-[9px] text-body-desc flex-shrink-0">长图</div>
+                          )}
+                          {tool.coverSquare ? (
+                            <img src={tool.coverSquare} alt="方图" className="w-9 h-9 object-cover rounded border border-border/40 flex-shrink-0" />
+                          ) : (
+                            <div className="w-9 h-9 rounded border border-dashed border-border/60 flex items-center justify-center text-[9px] text-body-desc flex-shrink-0">方图</div>
+                          )}
+                        </div>
                       </td>
-                      <td className="px-4 py-3 text-right">
+                      <td className="px-4 py-2 text-right">
                         <div className="flex items-center gap-1 justify-end">
                           <button
                             onClick={() => togglePopular(tool.id)}

@@ -1,17 +1,13 @@
 import { useCategories } from "@/hooks/useData";
 import { ThemeToggle } from "./ThemeToggle";
-import { Sparkles, PanelLeftClose, PanelLeftOpen, Briefcase, Image, Film, Headphones, PenTool, Code, Home, Settings } from "lucide-react";
+import { PanelLeftClose, PanelLeftOpen, Briefcase, Image, Film, Headphones, PenTool, Code, Home, Settings, Globe, Zap, Layers, Cpu, MessageSquare, BookOpen, Palette, Music, Video, Camera } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import type { LucideIcon } from "lucide-react";
 
 const iconMap: Record<string, LucideIcon> = {
-  Briefcase,
-  Image,
-  Film,
-  Headphones,
-  PenTool,
-  Code,
+  Briefcase, Image, Film, Headphones, PenTool, Code,
+  Globe, Zap, Layers, Cpu, MessageSquare, BookOpen, Palette, Music, Video, Camera,
 };
 
 interface CategorySidebarProps {

@@ -1,4 +1,4 @@
-import { categories } from "@/data/mockData";
+import { useCategories } from "@/hooks/useData";
 import { Menu, X, Sparkles, Briefcase, Image, Film, Headphones, PenTool, Code } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useState } from "react";
@@ -18,6 +18,7 @@ export function MobileNav({ activeCategory, onCategoryClick }: MobileNavProps) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const categories = useCategories();
 
   const handleClick = (id: string) => {
     if (location.pathname !== "/") {

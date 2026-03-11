@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { categories, recentTools, popularTools } from "@/data/mockData";
+import { useCategoriesWithTools, useRecentTools, usePopularTools } from "@/hooks/useData";
 import { CategorySidebar } from "@/components/CategorySidebar";
 import { MobileNav } from "@/components/MobileNav";
 import { HeroSection } from "@/components/HeroSection";
@@ -10,7 +10,10 @@ import { CategoryFloor } from "@/components/CategoryFloor";
 
 const Index = () => {
   const location = useLocation();
-  const [activeCategory, setActiveCategory] = useState(categories[0].id);
+  const categoriesWithTools = useCategoriesWithTools();
+  const recentTools = useRecentTools();
+  const popularTools = usePopularTools();
+  const [activeCategory, setActiveCategory] = useState(categoriesWithTools[0]?.id || "");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   useEffect(() => {
@@ -21,7 +24,6 @@ const Index = () => {
         const el = document.getElementById(scrollTo);
         if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 100);
-      // Clear the state
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
@@ -49,7 +51,7 @@ const Index = () => {
           <HorizontalToolList title="🕐 最近使用" tools={recentTools} />
           <PopularToolList title="🔥 热门工具" tools={popularTools} />
           <div className="mt-4">
-            {categories.map((cat) => (
+            {categoriesWithTools.map((cat) => (
               <CategoryFloor key={cat.id} category={cat} />
             ))}
           </div>

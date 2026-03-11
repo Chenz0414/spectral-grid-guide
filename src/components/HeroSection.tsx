@@ -1,8 +1,6 @@
 import { Search, Sparkles } from "lucide-react";
 import { useState, useMemo, useRef, useEffect } from "react";
-import { categories, Tool } from "@/data/mockData";
-
-const allTools: Tool[] = categories.flatMap((c) => c.tools);
+import { Tool, getTools } from "@/data/mockData";
 
 export function HeroSection() {
   const [query, setQuery] = useState("");
@@ -12,6 +10,7 @@ export function HeroSection() {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return [];
+    const allTools = getTools();
     return allTools.filter((t) =>
       t.title.toLowerCase().includes(q) || t.tags.some((tag) => tag.toLowerCase().includes(q))
     ).slice(0, 8);
@@ -31,9 +30,16 @@ export function HeroSection() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  const handleToolClick = (tool: Tool) => {
+    if (tool.url) {
+      window.open(tool.url, "_blank", "noopener,noreferrer");
+    }
+    setQuery(tool.title);
+    setOpen(false);
+  };
+
   return (
     <section className="relative px-4 md:px-8 pt-12 pb-10 md:pt-20 md:pb-14 hero-gradient overflow-visible">
-      {/* Decorative orbs */}
       <div className="absolute top-0 left-1/4 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" />
       <div className="absolute top-10 right-1/4 w-56 h-56 bg-[#6FD6B4]/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" style={{ animationDelay: '1.5s' }} />
 
@@ -51,12 +57,9 @@ export function HeroSection() {
         </p>
 
         <div className="relative max-w-lg mx-auto group" ref={wrapperRef}>
-          {/* Outer glow */}
           <div className="absolute -inset-1 rounded-2xl blur-lg opacity-100"
             style={{ background: 'linear-gradient(135deg, rgba(82,82,229,0.35), rgba(111,214,180,0.35))' }}
           />
-
-          {/* Animated gradient border */}
           <div className="relative p-[1.5px] rounded-xl search-border-animate overflow-visible">
             <div className="relative rounded-[10px] bg-card/90 glass-card">
               <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-primary transition-colors duration-300" />
@@ -69,8 +72,6 @@ export function HeroSection() {
                 className="w-full pl-11 pr-4 py-3.5 rounded-[10px] bg-transparent text-title text-sm placeholder:text-body-desc focus:outline-none transition-all duration-300"
               />
             </div>
-
-            {/* Dropdown results */}
             {open && (
               <div className="absolute left-0 right-0 top-full mt-2 rounded-xl bg-card border border-border/60 shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                 <ul className="py-1.5 max-h-80 overflow-y-auto">
@@ -78,7 +79,7 @@ export function HeroSection() {
                     <li key={tool.id}>
                       <button
                         className="w-full text-left px-4 py-2.5 flex items-center gap-3 hover:bg-hover-bg transition-colors cursor-pointer"
-                        onClick={() => { setQuery(tool.title); setOpen(false); }}
+                        onClick={() => handleToolClick(tool)}
                       >
                         <span className="text-lg shrink-0">{tool.icon}</span>
                         <div className="min-w-0">

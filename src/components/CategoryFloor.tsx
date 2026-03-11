@@ -1,10 +1,10 @@
-import { Category } from "@/data/mockData";
+import { CategoryWithTools } from "@/data/mockData";
 import { ToolCard } from "./ToolCard";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
 interface CategoryFloorProps {
-  category: Category;
+  category: CategoryWithTools;
 }
 
 export function CategoryFloor({ category }: CategoryFloorProps) {

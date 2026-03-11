@@ -409,10 +409,12 @@ const AdminPage = () => {
   const [catDragId, setCatDragId] = useState<string | null>(null);
   const [catDragOverId, setCatDragOverId] = useState<string | null>(null);
 
-  const filteredTools = tools.filter((t) =>
-    t.title.toLowerCase().includes(search.toLowerCase()) ||
-    t.tags.some((tag) => tag.toLowerCase().includes(search.toLowerCase()))
-  );
+  const filteredTools = tools.filter((t) => {
+    const matchesSearch = t.title.toLowerCase().includes(search.toLowerCase()) ||
+      t.tags.some((tag) => tag.toLowerCase().includes(search.toLowerCase()));
+    const matchesCategory = filterCategoryId === "all" || t.categoryIds.includes(filterCategoryId);
+    return matchesSearch && matchesCategory;
+  });
 
   const handleSaveTool = (tool: Tool) => {
     const exists = tools.find((t) => t.id === tool.id);

@@ -7,6 +7,29 @@ import Index from "./pages/Index.tsx";
 import CategoryPage from "./pages/CategoryPage.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import { useEffect } from "react";
+import { getTools, saveTools } from "@/data/mockData";
+import { getDefaultCover } from "@/components/ToolCard";
+
+function useBackfillCovers() {
+  useEffect(() => {
+    const tools = getTools();
+    let changed = false;
+    const updated = tools.map((t) => {
+      if (!t.coverLandscape || !t.coverSquare) {
+        changed = true;
+        const cover = getDefaultCover(t.id);
+        return {
+          ...t,
+          coverLandscape: t.coverLandscape || cover,
+          coverSquare: t.coverSquare || cover,
+        };
+      }
+      return t;
+    });
+    if (changed) saveTools(updated);
+  }, []);
+}
 
 const queryClient = new QueryClient();
 

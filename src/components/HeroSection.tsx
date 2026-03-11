@@ -32,7 +32,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative px-4 md:px-8 pt-12 pb-10 md:pt-20 md:pb-14 hero-gradient overflow-hidden">
+    <section className="relative px-4 md:px-8 pt-12 pb-10 md:pt-20 md:pb-14 hero-gradient overflow-visible">
       {/* Decorative orbs */}
       <div className="absolute top-0 left-1/4 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" />
       <div className="absolute top-10 right-1/4 w-56 h-56 bg-[#6FD6B4]/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" style={{ animationDelay: '1.5s' }} />

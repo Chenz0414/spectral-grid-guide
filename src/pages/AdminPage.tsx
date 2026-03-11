@@ -526,6 +526,31 @@ const AdminPage = () => {
                 新建工具
               </Button>
             </div>
+            <div className="flex flex-wrap gap-1.5 mb-4">
+              <button
+                onClick={() => setFilterCategoryId("all")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-colors ${
+                  filterCategoryId === "all"
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-card border-border text-body2 hover:bg-hover-bg"
+                }`}
+              >
+                全部
+              </button>
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setFilterCategoryId(cat.id)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium border cursor-pointer transition-colors ${
+                    filterCategoryId === cat.id
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-card border-border text-body2 hover:bg-hover-bg"
+                  }`}
+                >
+                  {cat.name}
+                </button>
+              ))}
+            </div>
             <div className="border border-border/60 rounded-xl overflow-hidden">
               <table className="w-full">
                 <thead>

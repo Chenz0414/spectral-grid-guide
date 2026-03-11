@@ -56,7 +56,7 @@ export function HeroSection() {
           Rita 为你精选数百款优质 AI 工具，助力工作效率提升
         </p>
 
-        <div className="relative max-w-lg mx-auto group" ref={wrapperRef}>
+        <div className="relative max-w-xl mx-auto group" ref={wrapperRef}>
           <div className="absolute -inset-1 rounded-2xl blur-lg opacity-60 dark:opacity-40"
             style={{ background: 'linear-gradient(135deg, rgba(82,82,229,0.35), rgba(111,214,180,0.35))' }}
           />

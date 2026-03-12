@@ -37,7 +37,7 @@ export function PopularToolList({ title, tools }: PopularToolListProps) {
   return (
     <section className="px-4 md:px-8 mb-10">
       <div className="flex items-center gap-2.5 mb-5">
-        <div className="w-1 h-5 rounded-full bg-gradient-to-b from-primary to-[#6FD6B4]" />
+        <div className="w-1 h-5 rounded-full bg-gradient-to-b from-primary to-glow-secondary" />
         <h2 className="text-base font-bold text-title">{title}</h2>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">

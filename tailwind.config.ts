@@ -56,6 +56,7 @@ export default {
         "body-desc": "hsl(var(--body-desc))",
         "hover-bg": "hsl(var(--hover-bg))",
         "menu-selected": "hsl(var(--menu-selected))",
+        "glow-secondary": "hsl(var(--glow-secondary))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

@@ -34,7 +34,7 @@ export function MobileNav({ activeCategory, onCategoryClick }: MobileNavProps) {
     <div className="md:hidden sticky top-0 z-50 bg-card/80 glass border-b border-border/60">
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-[#6FD6B4] flex items-center justify-center">
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-glow-secondary flex items-center justify-center">
             <Sparkles size={14} className="text-primary-foreground" />
           </div>
           <h1 className="text-lg font-bold gradient-text">Rita</h1>

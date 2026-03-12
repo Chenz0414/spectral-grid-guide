@@ -31,6 +31,7 @@ export function HeroSection() {
   }, []);
 
   const handleToolClick = (tool: Tool) => {
+    recordRecentTool(tool.id);
     if (tool.url) {
       window.open(tool.url, "_blank", "noopener,noreferrer");
     }

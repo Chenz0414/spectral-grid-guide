@@ -152,8 +152,8 @@
   .card-hover:hover {
     transform: translateY(-6px);
     box-shadow:
-      0 20px 40px -12px rgba(82, 82, 229, 0.2),
-      0 0 0 1px rgba(82, 82, 229, 0.05);
+      0 20px 40px -12px hsla(240, 74%, 61%, 0.2),
+      0 0 0 1px hsla(240, 74%, 61%, 0.05);
   }
 
   .dark .card-hover:hover {

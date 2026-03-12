@@ -158,8 +158,8 @@
 
   .dark .card-hover:hover {
     box-shadow:
-      0 20px 40px -12px rgba(82, 82, 229, 0.3),
-      0 0 20px -4px rgba(111, 214, 180, 0.1);
+      0 20px 40px -12px hsla(160, 56%, 64%, 0.3),
+      0 0 20px -4px hsla(160, 56%, 64%, 0.15);
   }
 
   .glass {

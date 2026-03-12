@@ -100,6 +100,9 @@
     --sidebar-accent-foreground: 240 24% 92%;
     --sidebar-border: 240 6% 28%;
     --sidebar-ring: 160 56% 64%;
+
+    --glow-primary: 160 56% 64%;
+    --glow-secondary: 240 74% 61%;
   }
 }
 

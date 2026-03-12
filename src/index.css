@@ -180,11 +180,11 @@
   }
 
   .glow-sm {
-    box-shadow: 0 0 15px -3px rgba(82, 82, 229, 0.15);
+    box-shadow: 0 0 15px -3px hsla(240, 74%, 61%, 0.15);
   }
 
   .dark .glow-sm {
-    box-shadow: 0 0 20px -3px rgba(82, 82, 229, 0.25);
+    box-shadow: 0 0 20px -3px hsla(160, 56%, 64%, 0.25);
   }
 
   .scrollbar-hide {

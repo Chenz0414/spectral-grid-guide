@@ -1,6 +1,6 @@
 import { Search, Sparkles } from "lucide-react";
 import { useState, useMemo, useRef, useEffect } from "react";
-import { Tool, getTools } from "@/data/mockData";
+import { Tool, getTools, recordRecentTool } from "@/data/mockData";
 
 export function HeroSection() {
   const [query, setQuery] = useState("");
@@ -31,6 +31,7 @@ export function HeroSection() {
   }, []);
 
   const handleToolClick = (tool: Tool) => {
+    recordRecentTool(tool.id);
     if (tool.url) {
       window.open(tool.url, "_blank", "noopener,noreferrer");
     }

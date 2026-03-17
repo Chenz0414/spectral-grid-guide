@@ -61,7 +61,7 @@ export default function ToolDetailPage() {
   const navigate = useNavigate();
   const tools = useTools();
   const categories = useCategories();
-  const tool = tools.find((t) => t.slug === slug);
+  const tool = tools.find((t) => t.url === `/${slug}`);
 
   useEffect(() => {
     if (tool) recordRecentTool(tool.id);
@@ -164,7 +164,7 @@ export default function ToolDetailPage() {
 
               <div className="flex gap-3">
                 <Button
-                  onClick={() => { if (tool.url) window.location.href = tool.url; }}
+                  onClick={() => { /* TODO: 配置外部链接后跳转 */ }}
                   className="gap-2 px-6 rounded-xl"
                 >
                   <ExternalLink size={15} />
@@ -237,7 +237,7 @@ export default function ToolDetailPage() {
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
               {relatedTools.map((t) => (
-                <Link key={t.id} to={`/tool/${t.slug}`}>
+                <Link key={t.id} to={t.url}>
                   <ToolCard tool={t} />
                 </Link>
               ))}

@@ -35,7 +35,7 @@ export function HeroSection() {
 
   const handleToolClick = (tool: Tool) => {
     recordRecentTool(tool.id);
-    navigate(`/tool/${tool.slug}`);
+    if (tool.url) navigate(tool.url);
     setQuery(tool.title);
     setOpen(false);
   };

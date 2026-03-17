@@ -1,4 +1,5 @@
 import { Tool, recordRecentTool } from "@/data/mockData";
+import { useNavigate } from "react-router-dom";
 import { getDefaultCover } from "@/components/ToolCard";
 
 interface PopularToolListProps {
@@ -7,13 +8,12 @@ interface PopularToolListProps {
 }
 
 function PopularToolCard({ tool }: { tool: Tool }) {
+  const navigate = useNavigate();
   const coverImg = tool.coverSquare || getDefaultCover(tool.id);
 
   const handleClick = () => {
     recordRecentTool(tool.id);
-    if (tool.url) {
-      window.location.href = tool.url;
-    }
+    if (tool.url) navigate(tool.url);
   };
 
   return (

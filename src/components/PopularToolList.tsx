@@ -8,13 +8,12 @@ interface PopularToolListProps {
 }
 
 function PopularToolCard({ tool }: { tool: Tool }) {
+  const navigate = useNavigate();
   const coverImg = tool.coverSquare || getDefaultCover(tool.id);
 
   const handleClick = () => {
     recordRecentTool(tool.id);
-    if (tool.url) {
-      window.location.href = tool.url;
-    }
+    if (tool.url) navigate(tool.url);
   };
 
   return (

@@ -65,10 +65,8 @@ function getDetail(id: string) {
 export default function ToolDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  useData();
-
-  const tools = getTools();
-  const categories = getCategories();
+  const tools = useTools();
+  const categories = useCategories();
   const tool = tools.find((t) => t.slug === slug);
 
   useEffect(() => {

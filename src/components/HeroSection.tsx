@@ -1,5 +1,6 @@
 import { Search, Sparkles } from "lucide-react";
 import { useState, useMemo, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Tool, getTools, recordRecentTool } from "@/data/mockData";
 
 export function HeroSection() {
@@ -30,11 +31,11 @@ export function HeroSection() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  const navigate = useNavigate();
+
   const handleToolClick = (tool: Tool) => {
     recordRecentTool(tool.id);
-    if (tool.url) {
-      window.open(tool.url, "_blank", "noopener,noreferrer");
-    }
+    navigate(`/tool/${tool.slug}`);
     setQuery(tool.title);
     setOpen(false);
   };

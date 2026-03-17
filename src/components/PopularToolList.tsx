@@ -12,7 +12,7 @@ function PopularToolCard({ tool }: { tool: Tool }) {
   const handleClick = () => {
     recordRecentTool(tool.id);
     if (tool.url) {
-      window.open(tool.url, "_blank", "noopener,noreferrer");
+      window.location.href = tool.url;
     }
   };
 

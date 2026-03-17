@@ -46,7 +46,7 @@ const defaultTools: Tool[] = [
   { id: "9", title: "日程智能规划", description: "AI 根据任务优先级自动安排每日工作日程", icon: "📅", tags: ["日程", "规划"], slug: "schedule-planner", url: "https://example.com/schedule-planner", coverType: "landscape", categoryIds: ["ai-office"] },
   { id: "10", title: "OCR 文字识别", description: "高精度识别图片和扫描件中的文字内容", icon: "🔍", tags: ["OCR", "识别"], slug: "ocr-tool", url: "https://example.com/ocr-tool", coverType: "landscape", categoryIds: ["ai-office"] },
 
-  { id: "11", title: "AI 绘画", description: "输入文字描述即可生成高质量艺术画作", icon: "🎨", tags: ["绘画", "生成"], slug: "ai-painting", url: "https://example.com/ai-painting", coverType: "landscape", categoryIds: ["ai-image"] },
+  { id: "11", title: "AI 绘画", description: "输入文字描述即可生成高质量艺术画作", icon: "🎨", tags: ["绘画", "生成"], slug: "ai-painting", url: "/ai-painting", coverType: "landscape", categoryIds: ["ai-image"] },
   { id: "12", title: "图片增强", description: "一键提升图片清晰度和画质，支持超分辨率放大", icon: "📸", tags: ["增强", "超分"], slug: "image-enhance", url: "https://example.com/image-enhance", coverType: "landscape", categoryIds: ["ai-image"] },
   { id: "13", title: "AI 抠图", description: "智能识别主体并一键去除背景，精准到发丝级别", icon: "✂️", tags: ["抠图", "背景"], slug: "bg-remover", url: "https://example.com/bg-remover", coverType: "landscape", categoryIds: ["ai-image"] },
   { id: "14", title: "风格迁移", description: "将照片转换为油画、水彩、素描等多种艺术风格", icon: "🖼️", tags: ["风格", "艺术"], slug: "style-transfer", url: "https://example.com/style-transfer", coverType: "landscape", categoryIds: ["ai-image"] },

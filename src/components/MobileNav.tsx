@@ -47,25 +47,40 @@ export function MobileNav({ activeCategory, onCategoryClick }: MobileNavProps) {
         </div>
       </div>
       {open && (
-        <div className="px-4 pb-4 space-y-0.5 border-t border-border/60 pt-3">
-          {categories.map((cat) => {
-            const IconComp = iconMap[cat.icon];
-            return (
-              <button
-                key={cat.id}
-                onClick={() => handleClick(cat.id)}
-                className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer flex items-center gap-2.5 ${
-                  activeCategory === cat.id
-                    ? "bg-menu-selected text-title glow-sm"
-                    : "text-body2 hover:bg-hover-bg"
-                }`}
-              >
-                {IconComp && <IconComp size={16} className="shrink-0" />}
-                <span>{cat.name}</span>
-              </button>
-            );
-          })}
-        </div>
+        <>
+          <div className="fixed inset-0 top-[57px] bg-background/60 backdrop-blur-sm z-40" onClick={() => setOpen(false)} />
+          <div className="absolute left-0 right-0 top-full z-50 bg-card border-b border-border/60 shadow-xl px-4 pb-4 space-y-0.5 pt-3 max-h-[70vh] overflow-y-auto">
+            {/* 首页 */}
+            <button
+              onClick={() => { onCategoryClick(""); navigate("/"); window.scrollTo({ top: 0, behavior: "smooth" }); setOpen(false); }}
+              className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer flex items-center gap-2.5 ${
+                !activeCategory
+                  ? "bg-menu-selected text-title glow-sm"
+                  : "text-body2 hover:bg-hover-bg"
+              }`}
+            >
+              <Home size={16} className="shrink-0" />
+              <span>首页</span>
+            </button>
+            {categories.map((cat) => {
+              const IconComp = iconMap[cat.icon];
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => handleClick(cat.id)}
+                  className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer flex items-center gap-2.5 ${
+                    activeCategory === cat.id
+                      ? "bg-menu-selected text-title glow-sm"
+                      : "text-body2 hover:bg-hover-bg"
+                  }`}
+                >
+                  {IconComp && <IconComp size={16} className="shrink-0" />}
+                  <span>{cat.name}</span>
+                </button>
+              );
+            })}
+          </div>
+        </>
       )}
     </div>
   );

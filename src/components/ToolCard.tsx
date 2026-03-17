@@ -30,7 +30,7 @@ export function ToolCard({ tool, compact }: ToolCardProps) {
 
   const handleClick = () => {
     recordRecentTool(tool.id);
-    navigate(`/tool/${tool.slug}`);
+    if (tool.url) navigate(tool.url);
   };
 
   if (compact) {

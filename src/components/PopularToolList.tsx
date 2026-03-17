@@ -1,4 +1,5 @@
 import { Tool, recordRecentTool } from "@/data/mockData";
+import { useNavigate } from "react-router-dom";
 import { getDefaultCover } from "@/components/ToolCard";
 
 interface PopularToolListProps {

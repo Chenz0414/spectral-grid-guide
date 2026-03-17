@@ -1,9 +1,7 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getToolsByCategory } from "@/data/mockData";
 import { useCategories } from "@/hooks/useData";
-import { CategorySidebar } from "@/components/CategorySidebar";
-import { MobileNav } from "@/components/MobileNav";
 import { HeroSection } from "@/components/HeroSection";
 import { ToolCard } from "@/components/ToolCard";
 
@@ -51,7 +49,6 @@ const categoryMeta: Record<string, { title: string; description: string; seoHead
 
 const CategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const categories = useCategories();
 
   const category = useMemo(
@@ -64,12 +61,11 @@ const CategoryPage = () => {
     [categoryId]
   );
 
-  const activeCategory = categoryId || categories[0]?.id || "";
   const meta = categoryId ? categoryMeta[categoryId] : null;
 
   if (!category) {
     return (
-      <div className="flex min-h-screen bg-background items-center justify-center">
+      <div className="flex flex-1 items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-title mb-2">分类未找到</h1>
           <Link to="/" className="text-primary hover:underline text-sm">返回首页</Link>
@@ -79,45 +75,34 @@ const CategoryPage = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <CategorySidebar
-        activeCategory={activeCategory}
-        onCategoryClick={() => {}}
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
-      />
-      <div className="flex-1 flex flex-col min-w-0">
-        <MobileNav activeCategory={activeCategory} onCategoryClick={() => {}} />
-        <main className="flex-1 overflow-y-auto pb-12">
-          <HeroSection />
-          <section className="px-4 md:px-8 mt-10">
-            <h1 className="text-2xl md:text-3xl font-extrabold text-title tracking-tight mb-3">
-              {meta?.title || category.name}
-            </h1>
-            {meta && (
-              <p className="text-sm md:text-base text-body2 leading-relaxed mb-8">{meta.description}</p>
-            )}
-          </section>
-          <section className="px-4 md:px-8">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-              {tools.map((tool) => (
-                <ToolCard key={tool.id} tool={tool} />
-              ))}
-            </div>
-          </section>
-          {meta && (
-            <section className="px-4 md:px-8 mt-16 mb-8 max-w-3xl">
-              <div className="border-t border-border/50 pt-8">
-                <h2 className="text-lg font-bold text-title mb-4">{meta.seoHeading}</h2>
-                {meta.seoParagraphs.map((p, i) => (
-                  <p key={i} className="text-sm text-body2 leading-relaxed mb-3">{p}</p>
-                ))}
-              </div>
-            </section>
-          )}
-        </main>
-      </div>
-    </div>
+    <>
+      <HeroSection />
+      <section className="px-4 md:px-8 mt-10">
+        <h1 className="text-2xl md:text-3xl font-extrabold text-title tracking-tight mb-3">
+          {meta?.title || category.name}
+        </h1>
+        {meta && (
+          <p className="text-sm md:text-base text-body2 leading-relaxed mb-8">{meta.description}</p>
+        )}
+      </section>
+      <section className="px-4 md:px-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+          {tools.map((tool) => (
+            <ToolCard key={tool.id} tool={tool} />
+          ))}
+        </div>
+      </section>
+      {meta && (
+        <section className="px-4 md:px-8 mt-16 mb-8 max-w-3xl">
+          <div className="border-t border-border/50 pt-8">
+            <h2 className="text-lg font-bold text-title mb-4">{meta.seoHeading}</h2>
+            {meta.seoParagraphs.map((p, i) => (
+              <p key={i} className="text-sm text-body2 leading-relaxed mb-3">{p}</p>
+            ))}
+          </div>
+        </section>
+      )}
+    </>
   );
 };
 

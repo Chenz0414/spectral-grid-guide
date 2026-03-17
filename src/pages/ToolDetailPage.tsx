@@ -7,15 +7,13 @@ import { ArrowLeft, ExternalLink, Star, Users, Zap, Clock, Shield, Sparkles } fr
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useEffect } from "react";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
-// Mock detail data per tool (expandable)
+// Mock detail data per tool
 const toolDetails: Record<string, {
   rating: number;
   users: string;
   features: string[];
   highlights: { icon: string; title: string; desc: string }[];
-  screenshots: string[];
 }> = {
   "11": {
     rating: 4.8,
@@ -34,13 +32,10 @@ const toolDetails: Record<string, {
       { icon: "Sparkles", title: "风格丰富", desc: "涵盖写实、动漫、水彩等 200+ 风格" },
       { icon: "Users", title: "社区活跃", desc: "百万创作者分享 prompt 与作品" },
     ],
-    screenshots: [],
   },
 };
 
-const iconMap: Record<string, React.ElementType> = {
-  Zap, Shield, Sparkles, Users,
-};
+const iconMap: Record<string, React.ElementType> = { Zap, Shield, Sparkles, Users };
 
 function getDetail(id: string) {
   return toolDetails[id] || {
@@ -58,7 +53,6 @@ function getDetail(id: string) {
       { icon: "Sparkles", title: "智能优化", desc: "持续学习，越用越好" },
       { icon: "Users", title: "广泛使用", desc: "服务全球数百万用户" },
     ],
-    screenshots: [],
   };
 }
 
@@ -70,14 +64,12 @@ export default function ToolDetailPage() {
   const tool = tools.find((t) => t.slug === slug);
 
   useEffect(() => {
-    if (tool) {
-      recordRecentTool(tool.id);
-    }
+    if (tool) recordRecentTool(tool.id);
   }, [tool?.id]);
 
   if (!tool) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="flex flex-1 items-center justify-center">
         <div className="text-center">
           <p className="text-muted-foreground mb-4">未找到该工具</p>
           <Button variant="outline" onClick={() => navigate("/")}>返回首页</Button>
@@ -89,22 +81,19 @@ export default function ToolDetailPage() {
   const detail = getDetail(tool.id);
   const coverImg = tool.coverLandscape || getDefaultCover(tool.id);
   const toolCategories = categories.filter((c) => tool.categoryIds.includes(c.id));
-  
-  // Related tools from same category
   const relatedTools = tool.categoryIds.length > 0
     ? getToolsByCategory(tool.categoryIds[0]).filter((t) => t.id !== tool.id).slice(0, 5)
     : [];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div>
       {/* Hero banner */}
       <div className="relative overflow-hidden">
-        {/* Background glow */}
         <div className="absolute inset-0 hero-gradient" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
 
-        {/* Top nav */}
-        <div className="relative z-10 flex items-center justify-between px-4 md:px-8 pt-5 pb-2">
+        {/* Back button */}
+        <div className="relative z-10 px-4 md:px-8 pt-5 pb-2">
           <button
             onClick={() => navigate(-1)}
             className="inline-flex items-center gap-2 text-sm text-body2 hover:text-foreground transition-colors"
@@ -112,7 +101,6 @@ export default function ToolDetailPage() {
             <ArrowLeft size={16} />
             返回
           </button>
-          <ThemeToggle />
         </div>
 
         {/* Hero content */}
@@ -121,19 +109,13 @@ export default function ToolDetailPage() {
             {/* Cover image */}
             <div className="w-full md:w-[420px] shrink-0 rounded-2xl overflow-hidden border border-border/60 glow-sm">
               <div className="relative aspect-[16/10]">
-                <img
-                  src={coverImg}
-                  alt={tool.title}
-                  className="w-full h-full object-cover"
-                />
-                {/* Overlay gradient */}
+                <img src={coverImg} alt={tool.title} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
               </div>
             </div>
 
             {/* Info */}
             <div className="flex-1 min-w-0">
-              {/* Categories */}
               <div className="flex gap-2 mb-3 flex-wrap">
                 {toolCategories.map((cat) => (
                   <Link
@@ -146,18 +128,15 @@ export default function ToolDetailPage() {
                 ))}
               </div>
 
-              {/* Title & icon */}
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-4xl">{tool.icon}</span>
                 <h1 className="text-2xl md:text-3xl font-bold text-title">{tool.title}</h1>
               </div>
 
-              {/* Description */}
               <p className="text-body2 text-sm md:text-base leading-relaxed mb-5 max-w-xl">
                 {tool.description}
               </p>
 
-              {/* Stats */}
               <div className="flex items-center gap-6 mb-6">
                 <div className="flex items-center gap-1.5">
                   <Star size={15} className="text-primary fill-primary" />
@@ -175,25 +154,17 @@ export default function ToolDetailPage() {
                 </div>
               </div>
 
-              {/* Tags */}
               <div className="flex gap-2 flex-wrap mb-6">
                 {tool.tags.map((tag) => (
-                  <Badge
-                    key={tag}
-                    variant="secondary"
-                    className="text-xs font-medium border border-border/50"
-                  >
+                  <Badge key={tag} variant="secondary" className="text-xs font-medium border border-border/50">
                     {tag}
                   </Badge>
                 ))}
               </div>
 
-              {/* CTA */}
               <div className="flex gap-3">
                 <Button
-                  onClick={() => {
-                    if (tool.url) window.open(tool.url, "_blank", "noopener,noreferrer");
-                  }}
+                  onClick={() => { if (tool.url) window.open(tool.url, "_blank", "noopener,noreferrer"); }}
                   className="gap-2 px-6 rounded-xl"
                 >
                   <ExternalLink size={15} />
@@ -202,9 +173,7 @@ export default function ToolDetailPage() {
                 <Button
                   variant="outline"
                   className="gap-2 px-6 rounded-xl"
-                  onClick={() => {
-                    navigator.clipboard?.writeText(tool.url || window.location.href);
-                  }}
+                  onClick={() => { navigator.clipboard?.writeText(tool.url || window.location.href); }}
                 >
                   分享工具
                 </Button>
@@ -216,7 +185,7 @@ export default function ToolDetailPage() {
 
       {/* Content sections */}
       <div className="max-w-6xl mx-auto px-4 md:px-8 pb-16">
-        {/* Highlights grid */}
+        {/* Highlights */}
         <section className="mb-12">
           <h2 className="text-lg font-bold text-title mb-5 flex items-center gap-2">
             <div className="w-1 h-5 rounded-full bg-gradient-to-b from-primary to-glow-secondary" />
@@ -226,10 +195,7 @@ export default function ToolDetailPage() {
             {detail.highlights.map((h, i) => {
               const Icon = iconMap[h.icon] || Zap;
               return (
-                <div
-                  key={i}
-                  className="group relative rounded-xl border border-border/60 bg-card p-5 gradient-border card-hover overflow-hidden"
-                >
+                <div key={i} className="group relative rounded-xl border border-border/60 bg-card p-5 gradient-border card-hover overflow-hidden">
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-shimmer pointer-events-none" />
                   <div className="relative">
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
@@ -244,7 +210,7 @@ export default function ToolDetailPage() {
           </div>
         </section>
 
-        {/* Features list */}
+        {/* Features */}
         <section className="mb-12">
           <h2 className="text-lg font-bold text-title mb-5 flex items-center gap-2">
             <div className="w-1 h-5 rounded-full bg-gradient-to-b from-primary to-glow-secondary" />

@@ -1,8 +1,6 @@
-import { useState, useCallback, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation, useOutletContext } from "react-router-dom";
 import { useCategoriesWithTools, useRecentTools, usePopularTools } from "@/hooks/useData";
-import { CategorySidebar } from "@/components/CategorySidebar";
-import { MobileNav } from "@/components/MobileNav";
 import { HeroSection } from "@/components/HeroSection";
 import { HorizontalToolList } from "@/components/HorizontalToolList";
 import { PopularToolList } from "@/components/PopularToolList";
@@ -10,11 +8,10 @@ import { CategoryFloor } from "@/components/CategoryFloor";
 
 const Index = () => {
   const location = useLocation();
+  const { setActiveCategory } = useOutletContext<{ setActiveCategory: (id: string) => void }>();
   const categoriesWithTools = useCategoriesWithTools();
   const recentTools = useRecentTools();
   const popularTools = usePopularTools();
-  const [activeCategory, setActiveCategory] = useState(categoriesWithTools[0]?.id || "");
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     const scrollTo = location.state?.scrollTo;
@@ -26,38 +23,19 @@ const Index = () => {
       }, 100);
       window.history.replaceState({}, document.title);
     }
-  }, [location.state]);
-
-  const handleCategoryClick = useCallback((id: string) => {
-    setActiveCategory(id);
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, []);
+  }, [location.state, setActiveCategory]);
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <CategorySidebar
-        activeCategory={activeCategory}
-        onCategoryClick={handleCategoryClick}
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
-      />
-      <div className="flex-1 flex flex-col min-w-0">
-        <MobileNav activeCategory={activeCategory} onCategoryClick={handleCategoryClick} />
-        <main className="flex-1 overflow-y-auto pb-12">
-          <HeroSection />
-          <HorizontalToolList title="🕐 最近使用" tools={recentTools} />
-          <PopularToolList title="🔥 热门工具" tools={popularTools} />
-          <div className="mt-4">
-            {categoriesWithTools.map((cat) => (
-              <CategoryFloor key={cat.id} category={cat} />
-            ))}
-          </div>
-        </main>
+    <>
+      <HeroSection />
+      <HorizontalToolList title="🕐 最近使用" tools={recentTools} />
+      <PopularToolList title="🔥 热门工具" tools={popularTools} />
+      <div className="mt-4">
+        {categoriesWithTools.map((cat) => (
+          <CategoryFloor key={cat.id} category={cat} />
+        ))}
       </div>
-    </div>
+    </>
   );
 };
 

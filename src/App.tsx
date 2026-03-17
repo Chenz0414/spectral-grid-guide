@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Layout } from "@/components/Layout";
 import Index from "./pages/Index.tsx";
 import CategoryPage from "./pages/CategoryPage.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
@@ -39,11 +40,13 @@ const AppInner = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/category/:categoryId" element={<CategoryPage />} />
-        <Route path="/tool/:slug" element={<ToolDetailPage />} />
-        <Route path="/admin" element={<AdminPage />} />
-        <Route path="*" element={<NotFound />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Index />} />
+          <Route path="/category/:categoryId" element={<CategoryPage />} />
+          <Route path="/tool/:slug" element={<ToolDetailPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

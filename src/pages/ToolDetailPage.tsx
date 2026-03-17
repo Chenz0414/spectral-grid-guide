@@ -61,7 +61,7 @@ export default function ToolDetailPage() {
   const navigate = useNavigate();
   const tools = useTools();
   const categories = useCategories();
-  const tool = tools.find((t) => t.slug === slug);
+  const tool = tools.find((t) => t.url === `/${slug}`);
 
   useEffect(() => {
     if (tool) recordRecentTool(tool.id);

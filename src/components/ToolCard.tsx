@@ -1,4 +1,5 @@
 import { Tool, recordRecentTool } from "@/data/mockData";
+import { useNavigate } from "react-router-dom";
 
 import cover01 from "@/assets/tool-covers/cover-01.jpg";
 import cover02 from "@/assets/tool-covers/cover-02.jpg";
@@ -24,14 +25,12 @@ interface ToolCardProps {
 }
 
 export function ToolCard({ tool, compact }: ToolCardProps) {
-  // Use uploaded cover if available, otherwise fallback to default
+  const navigate = useNavigate();
   const coverImg = tool.coverLandscape || getDefaultCover(tool.id);
 
   const handleClick = () => {
     recordRecentTool(tool.id);
-    if (tool.url) {
-      window.open(tool.url, "_blank", "noopener,noreferrer");
-    }
+    navigate(`/tool/${tool.slug}`);
   };
 
   if (compact) {

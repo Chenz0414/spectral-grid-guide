@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import CategoryPage from "./pages/CategoryPage.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
+import ToolDetailPage from "./pages/ToolDetailPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { useEffect } from "react";
 import { getTools, saveTools } from "@/data/mockData";
@@ -40,6 +41,7 @@ const AppInner = () => {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/category/:categoryId" element={<CategoryPage />} />
+        <Route path="/tool/:slug" element={<ToolDetailPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

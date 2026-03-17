@@ -237,7 +237,7 @@ export default function ToolDetailPage() {
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
               {relatedTools.map((t) => (
-                <Link key={t.id} to={`/tool/${t.slug}`}>
+                <Link key={t.id} to={t.url}>
                   <ToolCard tool={t} />
                 </Link>
               ))}

@@ -33,12 +33,7 @@ export function MobileNav({ activeCategory, onCategoryClick }: MobileNavProps) {
   return (
     <div className="md:hidden sticky top-0 z-50 bg-card/80 glass border-b border-border/60">
       <div className="flex items-center justify-between px-4 py-3">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-glow-secondary flex items-center justify-center">
-            <Sparkles size={14} className="text-primary-foreground" />
-          </div>
-          <h1 className="text-lg font-bold gradient-text">Rita</h1>
-        </div>
+        <h1 className="text-lg font-bold text-title tracking-tight">AI工具</h1>
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <button onClick={() => setOpen(!open)} className="p-2 rounded-lg hover:bg-hover-bg transition-colors cursor-pointer">

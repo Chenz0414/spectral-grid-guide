@@ -164,7 +164,7 @@ export default function ToolDetailPage() {
 
               <div className="flex gap-3">
                 <Button
-                  onClick={() => { if (tool.url) window.location.href = tool.url; }}
+                  onClick={() => { /* TODO: 配置外部链接后跳转 */ }}
                   className="gap-2 px-6 rounded-xl"
                 >
                   <ExternalLink size={15} />

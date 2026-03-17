@@ -1,8 +1,8 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getTools, getCategories, getToolsByCategory, recordRecentTool, Tool } from "@/data/mockData";
+import { getToolsByCategory, recordRecentTool } from "@/data/mockData";
 import { getDefaultCover } from "@/components/ToolCard";
 import { ToolCard } from "@/components/ToolCard";
-import { useData } from "@/hooks/useData";
+import { useTools, useCategories } from "@/hooks/useData";
 import { ArrowLeft, ExternalLink, Star, Users, Zap, Clock, Shield, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

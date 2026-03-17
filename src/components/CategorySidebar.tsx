@@ -32,14 +32,14 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
 
   return (
     <aside
-      className={`hidden md:flex flex-col border-r border-border/60 bg-card/80 glass h-screen sticky top-0 shrink-0 transition-all duration-300 ease-in-out ${
+      className={`hidden md:flex flex-col border-r border-border/60 bg-card/80 glass h-screen sticky top-0 shrink-0 transition-[width] duration-300 ease-in-out overflow-hidden ${
         collapsed ? "w-[68px]" : "w-[200px]"
       }`}
     >
       {/* Header */}
-      <div className={`border-b border-border/60 flex items-center ${collapsed ? "justify-center p-3" : "p-5"}`}>
+      <div className={`border-b border-border/60 flex items-center shrink-0 ${collapsed ? "justify-center p-3" : "p-5"}`}>
         {!collapsed && (
-            <h1 className="text-lg font-bold text-title tracking-tight">AI工具</h1>
+            <h1 className="text-lg font-bold text-title tracking-tight whitespace-nowrap">AI工具</h1>
         )}
         {collapsed && (
           <button
@@ -51,7 +51,7 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
           </button>
         )}
         {!collapsed && (
-          <div className="ml-auto flex items-center gap-0.5">
+          <div className="ml-auto flex items-center gap-0.5 shrink-0">
             <ThemeToggle />
             <button
               onClick={onToggleCollapse}
@@ -65,8 +65,8 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
       </div>
 
       {/* Nav */}
-      <nav className={`flex-1 overflow-y-auto py-4 ${collapsed ? "px-2" : "px-3"}`}>
-        {!collapsed && <p className="section-label px-3 mb-3">分类导航</p>}
+      <nav className={`flex-1 overflow-y-auto overflow-x-hidden py-4 ${collapsed ? "px-2" : "px-3"}`}>
+        {!collapsed && <p className="section-label px-3 mb-3 whitespace-nowrap">分类导航</p>}
         <ul className="space-y-0.5">
           {/* 首页 */}
           <li>
@@ -81,7 +81,7 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
             ) : (
               <button
                 onClick={() => { navigate("/"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                className="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center gap-2.5 text-body2 hover:bg-hover-bg hover:text-title"
+                className="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center gap-2.5 text-body2 hover:bg-hover-bg hover:text-title whitespace-nowrap"
               >
                 <Home size={16} className="shrink-0" />
                 <span>首页</span>
@@ -107,7 +107,7 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
                 ) : (
                   <button
                     onClick={() => handleCategoryClick(cat.id)}
-                    className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center gap-2.5 ${
+                    className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center gap-2.5 whitespace-nowrap ${
                       activeCategory === cat.id
                         ? "bg-menu-selected text-title shadow-sm glow-sm"
                         : "text-body2 hover:bg-hover-bg hover:text-title"
@@ -124,7 +124,7 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
       </nav>
 
       {/* Admin link */}
-      <div className={`border-t border-border/60 ${collapsed ? "p-2" : "p-3"}`}>
+      <div className={`border-t border-border/60 shrink-0 ${collapsed ? "p-2" : "p-3"}`}>
         {collapsed ? (
           <button
             onClick={() => navigate("/admin")}
@@ -136,7 +136,7 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
         ) : (
           <button
             onClick={() => navigate("/admin")}
-            className="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center gap-2.5 text-body2 hover:bg-hover-bg hover:text-title"
+            className="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center gap-2.5 text-body2 hover:bg-hover-bg hover:text-title whitespace-nowrap"
           >
             <Settings size={16} className="shrink-0" />
             <span>管理配置</span>

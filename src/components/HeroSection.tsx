@@ -1,5 +1,6 @@
 import { Search, Sparkles } from "lucide-react";
 import { useState, useMemo, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Tool, getTools, recordRecentTool } from "@/data/mockData";
 
 export function HeroSection() {

@@ -25,14 +25,12 @@ interface ToolCardProps {
 }
 
 export function ToolCard({ tool, compact }: ToolCardProps) {
-  // Use uploaded cover if available, otherwise fallback to default
+  const navigate = useNavigate();
   const coverImg = tool.coverLandscape || getDefaultCover(tool.id);
 
   const handleClick = () => {
     recordRecentTool(tool.id);
-    if (tool.url) {
-      window.open(tool.url, "_blank", "noopener,noreferrer");
-    }
+    navigate(`/tool/${tool.slug}`);
   };
 
   if (compact) {

@@ -35,9 +35,15 @@ export function HeroSection() {
 
   const handleToolClick = (tool: Tool) => {
     recordRecentTool(tool.id);
-    if (tool.url) navigate(tool.url);
     setQuery(tool.title);
     setOpen(false);
+    if (tool.url) {
+      if (tool.url.startsWith("http")) {
+        window.location.href = tool.url;
+      } else {
+        navigate(tool.url);
+      }
+    }
   };
 
   return (

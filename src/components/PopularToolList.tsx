@@ -13,7 +13,13 @@ function PopularToolCard({ tool }: { tool: Tool }) {
 
   const handleClick = () => {
     recordRecentTool(tool.id);
-    if (tool.url) navigate(tool.url);
+    if (tool.url) {
+      if (tool.url.startsWith("http")) {
+        window.location.href = tool.url;
+      } else {
+        navigate(tool.url);
+      }
+    }
   };
 
   return (

@@ -30,7 +30,13 @@ export function ToolCard({ tool, compact }: ToolCardProps) {
 
   const handleClick = () => {
     recordRecentTool(tool.id);
-    if (tool.url) navigate(tool.url);
+    if (tool.url) {
+      if (tool.url.startsWith("http")) {
+        window.location.href = tool.url;
+      } else {
+        navigate(tool.url);
+      }
+    }
   };
 
   if (compact) {

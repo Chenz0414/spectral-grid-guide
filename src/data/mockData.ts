@@ -98,7 +98,7 @@ const defaultRecentIds = ["1", "11", "23", "29", "37", "45"];
 // --- localStorage helpers ---
 
 const DATA_VERSION_KEY = "rita_data_version";
-const CURRENT_VERSION = 2; // bump to force refresh of default data
+const CURRENT_VERSION = 3; // bump to force refresh of default data
 
 function loadJSON<T>(key: string, fallback: T): T {
   try {

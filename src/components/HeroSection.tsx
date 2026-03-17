@@ -13,7 +13,7 @@ export function HeroSection() {
     if (!q) return [];
     const allTools = getTools();
     return allTools.filter((t) =>
-      t.title.toLowerCase().includes(q) || t.tags.some((tag) => tag.toLowerCase().includes(q))
+      t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q) || t.tags.some((tag) => tag.toLowerCase().includes(q))
     ).slice(0, 8);
   }, [query]);
 

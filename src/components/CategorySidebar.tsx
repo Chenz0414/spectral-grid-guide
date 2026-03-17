@@ -72,7 +72,7 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
           <li>
             {collapsed ? (
               <button
-                onClick={() => { navigate("/"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                onClick={() => { onCategoryClick(""); navigate("/"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
                 title="首页"
                 className="w-full flex items-center justify-center p-2.5 rounded-lg transition-all duration-200 cursor-pointer text-body2 hover:bg-hover-bg hover:text-title"
               >
@@ -80,7 +80,7 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
               </button>
             ) : (
               <button
-                onClick={() => { navigate("/"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                onClick={() => { onCategoryClick(""); navigate("/"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
                 className="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center gap-2.5 text-body2 hover:bg-hover-bg hover:text-title whitespace-nowrap"
               >
                 <Home size={16} className="shrink-0" />

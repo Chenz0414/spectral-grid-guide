@@ -1,5 +1,5 @@
 import { useCategories } from "@/hooks/useData";
-import { Menu, X, Sparkles, Briefcase, Image, Film, Headphones, PenTool, Code, Globe, Zap, Layers, Cpu, MessageSquare, BookOpen, Palette, Music, Video, Camera } from "lucide-react";
+import { Menu, X, Sparkles, Home, Briefcase, Image, Film, Headphones, PenTool, Code, Globe, Zap, Layers, Cpu, MessageSquare, BookOpen, Palette, Music, Video, Camera } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";

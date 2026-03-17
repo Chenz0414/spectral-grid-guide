@@ -66,7 +66,7 @@ export function CategorySidebar({ activeCategory, onCategoryClick, collapsed, on
 
       {/* Nav */}
       <nav className={`flex-1 overflow-y-auto overflow-x-hidden py-4 ${collapsed ? "px-2" : "px-3"}`}>
-        {!collapsed && <p className="section-label px-3 mb-3 whitespace-nowrap">分类导航</p>}
+        
         <ul className="space-y-0.5">
           {/* 首页 */}
           <li>

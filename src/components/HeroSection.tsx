@@ -31,8 +31,11 @@ export function HeroSection() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  const navigate = useNavigate();
+
   const handleToolClick = (tool: Tool) => {
     recordRecentTool(tool.id);
+    navigate(`/tool/${tool.slug}`);
     setQuery(tool.title);
     setOpen(false);
   };

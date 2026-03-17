@@ -41,6 +41,7 @@ const AppInner = () => {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/category/:categoryId" element={<CategoryPage />} />
+        <Route path="/tool/:slug" element={<ToolDetailPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

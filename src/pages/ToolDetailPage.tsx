@@ -160,7 +160,7 @@ export default function ToolDetailPage() {
               {/* Stats */}
               <div className="flex items-center gap-6 mb-6">
                 <div className="flex items-center gap-1.5">
-                  <Star size={15} className="text-yellow-500 fill-yellow-500" />
+                  <Star size={15} className="text-primary fill-primary" />
                   <span className="text-sm font-semibold text-title">{detail.rating}</span>
                   <span className="text-xs text-body-desc">评分</span>
                 </div>

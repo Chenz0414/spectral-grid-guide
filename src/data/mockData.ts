@@ -97,6 +97,9 @@ const defaultRecentIds = ["1", "11", "23", "29", "37", "45"];
 
 // --- localStorage helpers ---
 
+const DATA_VERSION_KEY = "rita_data_version";
+const CURRENT_VERSION = 2; // bump to force refresh of default data
+
 function loadJSON<T>(key: string, fallback: T): T {
   try {
     const raw = localStorage.getItem(key);
@@ -107,6 +110,16 @@ function loadJSON<T>(key: string, fallback: T): T {
 
 function saveJSON<T>(key: string, data: T) {
   localStorage.setItem(key, JSON.stringify(data));
+}
+
+// Migration: clear stale data when version changes
+const storedVersion = loadJSON(DATA_VERSION_KEY, 0);
+if (storedVersion < CURRENT_VERSION) {
+  localStorage.removeItem(STORAGE_KEY_TOOLS);
+  localStorage.removeItem(STORAGE_KEY_CATEGORIES);
+  localStorage.removeItem(STORAGE_KEY_POPULAR);
+  localStorage.removeItem(STORAGE_KEY_RECENT);
+  saveJSON(DATA_VERSION_KEY, CURRENT_VERSION);
 }
 
 // --- State management ---

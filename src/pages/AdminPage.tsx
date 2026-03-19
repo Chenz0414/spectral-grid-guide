@@ -1,13 +1,10 @@
-import { useState, useRef, useCallback } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { icons } from "lucide-react";
 import {
   Tool,
   Category,
   CoverType,
-  getTools,
-  getCategories,
-  getPopularIds,
   addTool,
   updateTool,
   deleteTool,
@@ -16,16 +13,14 @@ import {
   deleteCategory,
   savePopularIds,
   saveCategories,
-  resetToDefaults,
 } from "@/data/mockData";
 import { useTools, useCategories, usePopularIds } from "@/hooks/useData";
-import { ArrowLeft, Plus, Pencil, Trash2, Star, StarOff, RotateCcw, X, ExternalLink, GripVertical } from "lucide-react";
+import { ArrowLeft, Plus, Pencil, Trash2, Star, StarOff, X, ExternalLink, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
-
-// ─── Tool Form Dialog ───
 
 interface ToolFormProps {
   tool?: Tool;
@@ -47,6 +42,7 @@ function ToolForm({ tool, onSave, onCancel, categories }: ToolFormProps) {
       url: "",
       coverType: "landscape" as CoverType,
       categoryIds: [],
+      enabled: false,
       coverLandscape: "",
       coverSquare: "",
     }
@@ -55,11 +51,26 @@ function ToolForm({ tool, onSave, onCancel, categories }: ToolFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.title.trim()) { toast.error("请填写工具名称"); return; }
-    if (!form.url.trim()) { toast.error("请填写跳转 URL"); return; }
-    if (form.categoryIds.length === 0) { toast.error("请至少选择一个分类"); return; }
-    if (!form.coverLandscape) { toast.error("请上传长图封面"); return; }
-    if (!form.coverSquare) { toast.error("请上传方图封面"); return; }
+    if (!form.title.trim()) {
+      toast.error("请填写工具名称");
+      return;
+    }
+    if (!form.url.trim()) {
+      toast.error("请填写跳转 URL");
+      return;
+    }
+    if (form.categoryIds.length === 0) {
+      toast.error("请至少选择一个分类");
+      return;
+    }
+    if (!form.coverLandscape) {
+      toast.error("请上传长图封面");
+      return;
+    }
+    if (!form.coverSquare) {
+      toast.error("请上传方图封面");
+      return;
+    }
     const slug = form.slug || form.title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
     const tags = tagInput.split(/[,，]/).map((t) => t.trim()).filter(Boolean);
     onSave({ ...form, slug, tags });
@@ -77,8 +88,14 @@ function ToolForm({ tool, onSave, onCancel, categories }: ToolFormProps) {
   const handleImageUpload = (field: "coverLandscape" | "coverSquare") => (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith("image/")) { toast.error("请选择图片文件"); return; }
-    if (file.size > 5 * 1024 * 1024) { toast.error("图片大小不能超过 5MB"); return; }
+    if (!file.type.startsWith("image/")) {
+      toast.error("请选择图片文件");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("图片大小不能超过 5MB");
+      return;
+    }
     const reader = new FileReader();
     reader.onload = () => {
       setForm((prev) => ({ ...prev, [field]: reader.result as string }));
@@ -94,7 +111,9 @@ function ToolForm({ tool, onSave, onCancel, categories }: ToolFormProps) {
       >
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-bold text-title">{isEdit ? "编辑工具" : "新建工具"}</h2>
-          <button onClick={onCancel} className="p-1.5 rounded-lg hover:bg-hover-bg cursor-pointer"><X size={18} className="text-body2" /></button>
+          <button onClick={onCancel} className="p-1.5 rounded-lg hover:bg-hover-bg cursor-pointer">
+            <X size={18} className="text-body2" />
+          </button>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-[auto_1fr] gap-3 items-center">
@@ -121,7 +140,13 @@ function ToolForm({ tool, onSave, onCancel, categories }: ToolFormProps) {
             <label className="text-sm text-body2 mb-1 block">标签（逗号分隔）</label>
             <Input value={tagInput} onChange={(e) => setTagInput(e.target.value)} placeholder="标签1, 标签2" />
           </div>
-          {/* Cover image uploads */}
+          <div className="flex items-center justify-between rounded-lg border border-border/60 px-3 py-2">
+            <div>
+              <p className="text-sm font-medium text-title">状态</p>
+              <p className="text-xs text-body-desc">{form.enabled === false ? "未启用" : "已启用"}</p>
+            </div>
+            <Switch checked={form.enabled !== false} onCheckedChange={(checked) => setForm((prev) => ({ ...prev, enabled: checked }))} />
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="text-sm text-body2 mb-1 block">长图封面 *</label>
@@ -180,16 +205,18 @@ function ToolForm({ tool, onSave, onCancel, categories }: ToolFormProps) {
             </div>
           </div>
           <div className="flex gap-2 pt-2">
-            <Button type="submit" className="flex-1">{isEdit ? "保存" : "创建"}</Button>
-            <Button type="button" variant="outline" onClick={onCancel}>取消</Button>
+            <Button type="submit" className="flex-1">
+              {isEdit ? "保存" : "创建"}
+            </Button>
+            <Button type="button" variant="outline" onClick={onCancel}>
+              取消
+            </Button>
           </div>
         </form>
       </div>
     </div>
   );
 }
-
-// ─── Category Form Dialog ───
 
 interface CategoryFormProps {
   category?: Category;
@@ -199,15 +226,16 @@ interface CategoryFormProps {
 
 function CategoryForm({ category, onSave, onCancel }: CategoryFormProps) {
   const isEdit = !!category;
-  const [form, setForm] = useState<Category>(
-    category || { id: "", name: "", icon: "Briefcase" }
-  );
+  const [form, setForm] = useState<Category>(category || { id: "", name: "", icon: "Briefcase" });
 
   const iconOptions = ["Briefcase", "Image", "Film", "Headphones", "PenTool", "Code", "Globe", "Zap", "Layers", "Cpu", "MessageSquare", "BookOpen", "Palette", "Music", "Video", "Camera"];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim()) { toast.error("请填写分类名称"); return; }
+    if (!form.name.trim()) {
+      toast.error("请填写分类名称");
+      return;
+    }
     const id = form.id || crypto.randomUUID();
     onSave({ ...form, id });
   };
@@ -225,7 +253,9 @@ function CategoryForm({ category, onSave, onCancel }: CategoryFormProps) {
       >
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-bold text-title">{isEdit ? "编辑分类" : "新建分类"}</h2>
-          <button onClick={onCancel} className="p-1.5 rounded-lg hover:bg-hover-bg cursor-pointer"><X size={18} className="text-body2" /></button>
+          <button onClick={onCancel} className="p-1.5 rounded-lg hover:bg-hover-bg cursor-pointer">
+            <X size={18} className="text-body2" />
+          </button>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -253,16 +283,18 @@ function CategoryForm({ category, onSave, onCancel }: CategoryFormProps) {
             </div>
           </div>
           <div className="flex gap-2 pt-2">
-            <Button type="submit" className="flex-1">{isEdit ? "保存" : "创建"}</Button>
-            <Button type="button" variant="outline" onClick={onCancel}>取消</Button>
+            <Button type="submit" className="flex-1">
+              {isEdit ? "保存" : "创建"}
+            </Button>
+            <Button type="button" variant="outline" onClick={onCancel}>
+              取消
+            </Button>
           </div>
         </form>
       </div>
     </div>
   );
 }
-
-// ─── Popular Manager with Drag & Drop ───
 
 interface PopularManagerProps {
   tools: Tool[];
@@ -291,10 +323,18 @@ function PopularManager({ tools, popularIds, togglePopular, getCategoryNames, on
   };
 
   const handleDrop = (targetId: string) => {
-    if (!dragId || dragId === targetId) { setDragId(null); setDragOverId(null); return; }
+    if (!dragId || dragId === targetId) {
+      setDragId(null);
+      setDragOverId(null);
+      return;
+    }
     const oldIndex = popularIds.indexOf(dragId);
     const newIndex = popularIds.indexOf(targetId);
-    if (oldIndex === -1 || newIndex === -1) { setDragId(null); setDragOverId(null); return; }
+    if (oldIndex === -1 || newIndex === -1) {
+      setDragId(null);
+      setDragOverId(null);
+      return;
+    }
     const newIds = [...popularIds];
     newIds.splice(oldIndex, 1);
     newIds.splice(newIndex, 0, dragId);
@@ -310,7 +350,6 @@ function PopularManager({ tools, popularIds, togglePopular, getCategoryNames, on
 
   return (
     <div className="space-y-6">
-      {/* Popular section */}
       <div>
         <div className="flex items-center gap-2 mb-3">
           <Star size={16} className="text-yellow-500 fill-yellow-500" />
@@ -318,9 +357,7 @@ function PopularManager({ tools, popularIds, togglePopular, getCategoryNames, on
           <span className="text-xs text-body-desc">拖拽排序 · 影响前台展示顺序</span>
         </div>
         {popularTools.length === 0 ? (
-          <div className="text-center py-8 text-sm text-body-desc border border-dashed border-border rounded-xl">
-            暂无热门工具，从下方列表中点击添加
-          </div>
+          <div className="text-center py-8 text-sm text-body-desc border border-dashed border-border rounded-xl">暂无热门工具，从下方列表中点击添加</div>
         ) : (
           <div className="space-y-1.5">
             {popularTools.map((tool, index) => (
@@ -347,7 +384,10 @@ function PopularManager({ tools, popularIds, togglePopular, getCategoryNames, on
                   <p className="text-xs text-body-desc truncate">{getCategoryNames(tool.categoryIds)}</p>
                 </div>
                 <button
-                  onClick={(e) => { e.stopPropagation(); togglePopular(tool.id); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    togglePopular(tool.id);
+                  }}
                   className="p-1.5 rounded-lg hover:bg-hover-bg cursor-pointer shrink-0"
                   title="取消热门"
                 >
@@ -359,7 +399,6 @@ function PopularManager({ tools, popularIds, togglePopular, getCategoryNames, on
         )}
       </div>
 
-      {/* Non-popular section */}
       <div>
         <div className="flex items-center gap-2 mb-3">
           <StarOff size={16} className="text-body-desc" />
@@ -367,20 +406,13 @@ function PopularManager({ tools, popularIds, togglePopular, getCategoryNames, on
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
           {nonPopularTools.map((tool) => (
-            <div
-              key={tool.id}
-              className="flex items-center gap-3 p-3 rounded-xl border bg-card border-border/60 hover:bg-hover-bg transition-all"
-            >
+            <div key={tool.id} className="flex items-center gap-3 p-3 rounded-xl border bg-card border-border/60 hover:bg-hover-bg transition-all">
               <span className="text-lg">{tool.icon}</span>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-title truncate">{tool.title}</p>
                 <p className="text-xs text-body-desc truncate">{getCategoryNames(tool.categoryIds)}</p>
               </div>
-              <button
-                onClick={() => togglePopular(tool.id)}
-                className="p-1.5 rounded-lg hover:bg-hover-bg cursor-pointer shrink-0"
-                title="设为热门"
-              >
+              <button onClick={() => togglePopular(tool.id)} className="p-1.5 rounded-lg hover:bg-hover-bg cursor-pointer shrink-0" title="设为热门">
                 <StarOff size={15} className="text-body-desc" />
               </button>
             </div>
@@ -390,8 +422,6 @@ function PopularManager({ tools, popularIds, togglePopular, getCategoryNames, on
     </div>
   );
 }
-
-// ─── Admin Page ───
 
 type Tab = "tools" | "categories" | "popular";
 
@@ -410,8 +440,7 @@ const AdminPage = () => {
   const [catDragOverId, setCatDragOverId] = useState<string | null>(null);
 
   const filteredTools = tools.filter((t) => {
-    const matchesSearch = t.title.toLowerCase().includes(search.toLowerCase()) ||
-      t.tags.some((tag) => tag.toLowerCase().includes(search.toLowerCase()));
+    const matchesSearch = t.title.toLowerCase().includes(search.toLowerCase()) || t.tags.some((tag) => tag.toLowerCase().includes(search.toLowerCase()));
     const matchesCategory = filterCategoryId === "all" || t.categoryIds.includes(filterCategoryId);
     return matchesSearch && matchesCategory;
   });
@@ -422,7 +451,7 @@ const AdminPage = () => {
       updateTool(tool);
       toast.success("工具已更新");
     } else {
-      addTool(tool);
+      addTool({ ...tool, enabled: false });
       toast.success("工具已创建");
     }
     setToolForm({ open: false });
@@ -432,6 +461,11 @@ const AdminPage = () => {
     if (!confirm("确定删除此工具？")) return;
     deleteTool(id);
     toast.success("工具已删除");
+  };
+
+  const handleToggleToolEnabled = (tool: Tool, enabled: boolean) => {
+    updateTool({ ...tool, enabled });
+    toast.success(enabled ? "已启用" : "已停用");
   };
 
   const handleSaveCategory = (cat: Category) => {
@@ -453,21 +487,12 @@ const AdminPage = () => {
   };
 
   const togglePopular = (toolId: string) => {
-    const newIds = popularIds.includes(toolId)
-      ? popularIds.filter((id) => id !== toolId)
-      : [...popularIds, toolId];
+    const newIds = popularIds.includes(toolId) ? popularIds.filter((id) => id !== toolId) : [...popularIds, toolId];
     savePopularIds(newIds);
     toast.success(popularIds.includes(toolId) ? "已取消热门" : "已设为热门");
   };
 
-  const handleReset = () => {
-    if (!confirm("确定恢复默认数据？所有自定义配置将丢失。")) return;
-    resetToDefaults();
-    toast.success("已恢复默认数据");
-  };
-
-  const getCategoryNames = (ids: string[]) =>
-    ids.map((id) => categories.find((c) => c.id === id)?.name || id).join(", ");
+  const getCategoryNames = (ids: string[]) => ids.map((id) => categories.find((c) => c.id === id)?.name || id).join(", ");
 
   const tabs: { key: Tab; label: string }[] = [
     { key: "tools", label: "工具管理" },
@@ -477,33 +502,23 @@ const AdminPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="sticky top-0 z-40 bg-card/80 glass border-b border-border/60">
         <div className="max-w-6xl mx-auto px-4 md:px-8 py-3 flex items-center gap-4">
           <button onClick={() => navigate("/")} className="p-2 rounded-lg hover:bg-hover-bg cursor-pointer">
             <ArrowLeft size={20} className="text-title" />
           </button>
           <h1 className="text-lg font-bold text-title">管理配置</h1>
-          <div className="ml-auto">
-            <Button variant="outline" size="sm" onClick={handleReset} className="gap-1.5">
-              <RotateCcw size={14} />
-              恢复默认
-            </Button>
-          </div>
         </div>
       </header>
 
       <div className="max-w-6xl mx-auto px-4 md:px-8 py-6">
-        {/* Tabs */}
         <div className="flex gap-1 mb-6 p-1 bg-card-secondary rounded-lg w-fit">
           {tabs.map((t) => (
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
-                tab === t.key
-                  ? "bg-card text-title shadow-sm"
-                  : "text-body2 hover:text-title"
+                tab === t.key ? "bg-card text-title shadow-sm" : "text-body2 hover:text-title"
               }`}
             >
               {t.label}
@@ -511,16 +526,10 @@ const AdminPage = () => {
           ))}
         </div>
 
-        {/* Tools Tab */}
         {tab === "tools" && (
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <Input
-                placeholder="搜索工具..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="max-w-xs"
-              />
+              <Input placeholder="搜索工具..." value={search} onChange={(e) => setSearch(e.target.value)} className="max-w-xs" />
               <Button onClick={() => setToolForm({ open: true })} className="gap-1.5">
                 <Plus size={16} />
                 新建工具
@@ -558,6 +567,7 @@ const AdminPage = () => {
                     <th className="px-4 py-3 text-xs font-semibold text-body2">工具</th>
                     <th className="px-4 py-3 text-xs font-semibold text-body2 hidden md:table-cell">分类</th>
                     <th className="px-4 py-3 text-xs font-semibold text-body2 hidden lg:table-cell">URL</th>
+                    <th className="px-4 py-3 text-xs font-semibold text-body2">状态</th>
                     <th className="px-4 py-3 text-xs font-semibold text-body2 hidden sm:table-cell">封面</th>
                     <th className="px-4 py-3 text-xs font-semibold text-body2 text-right">操作</th>
                   </tr>
@@ -582,6 +592,15 @@ const AdminPage = () => {
                           {tool.url.replace(/^https?:\/\//, "").slice(0, 30)}
                           <ExternalLink size={10} />
                         </a>
+                      </td>
+                      <td className="px-4 py-2">
+                        <div className="flex items-center gap-2">
+                          <Switch
+                            checked={tool.enabled !== false}
+                            onCheckedChange={(checked) => handleToggleToolEnabled(tool, checked)}
+                          />
+                          <span className="text-xs text-body2">{tool.enabled === false ? "未启用" : "已启用"}</span>
+                        </div>
                       </td>
                       <td className="px-4 py-2 hidden sm:table-cell">
                         <div className="flex items-center gap-2">
@@ -610,16 +629,10 @@ const AdminPage = () => {
                               <StarOff size={15} className="text-body-desc" />
                             )}
                           </button>
-                          <button
-                            onClick={() => setToolForm({ open: true, tool })}
-                            className="p-1.5 rounded-lg hover:bg-hover-bg cursor-pointer"
-                          >
+                          <button onClick={() => setToolForm({ open: true, tool })} className="p-1.5 rounded-lg hover:bg-hover-bg cursor-pointer">
                             <Pencil size={15} className="text-body2" />
                           </button>
-                          <button
-                            onClick={() => handleDeleteTool(tool.id)}
-                            className="p-1.5 rounded-lg hover:bg-destructive/10 cursor-pointer"
-                          >
+                          <button onClick={() => handleDeleteTool(tool.id)} className="p-1.5 rounded-lg hover:bg-destructive/10 cursor-pointer">
                             <Trash2 size={15} className="text-destructive" />
                           </button>
                         </div>
@@ -628,14 +641,11 @@ const AdminPage = () => {
                   ))}
                 </tbody>
               </table>
-              {filteredTools.length === 0 && (
-                <div className="py-12 text-center text-body-desc text-sm">暂无工具</div>
-              )}
+              {filteredTools.length === 0 && <div className="py-12 text-center text-body-desc text-sm">暂无工具</div>}
             </div>
           </div>
         )}
 
-        {/* Categories Tab */}
         {tab === "categories" && (
           <div>
             <div className="flex items-center gap-3 mb-4">
@@ -653,12 +663,23 @@ const AdminPage = () => {
                     key={cat.id}
                     draggable
                     onDragStart={() => setCatDragId(cat.id)}
-                    onDragOver={(e) => { e.preventDefault(); if (catDragId && catDragId !== cat.id) setCatDragOverId(cat.id); }}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      if (catDragId && catDragId !== cat.id) setCatDragOverId(cat.id);
+                    }}
                     onDrop={() => {
-                      if (!catDragId || catDragId === cat.id) { setCatDragId(null); setCatDragOverId(null); return; }
+                      if (!catDragId || catDragId === cat.id) {
+                        setCatDragId(null);
+                        setCatDragOverId(null);
+                        return;
+                      }
                       const oldIdx = categories.findIndex((c) => c.id === catDragId);
                       const newIdx = categories.findIndex((c) => c.id === cat.id);
-                      if (oldIdx === -1 || newIdx === -1) { setCatDragId(null); setCatDragOverId(null); return; }
+                      if (oldIdx === -1 || newIdx === -1) {
+                        setCatDragId(null);
+                        setCatDragOverId(null);
+                        return;
+                      }
                       const newCats = [...categories];
                       const [moved] = newCats.splice(oldIdx, 1);
                       newCats.splice(newIdx, 0, moved);
@@ -667,7 +688,10 @@ const AdminPage = () => {
                       setCatDragId(null);
                       setCatDragOverId(null);
                     }}
-                    onDragEnd={() => { setCatDragId(null); setCatDragOverId(null); }}
+                    onDragEnd={() => {
+                      setCatDragId(null);
+                      setCatDragOverId(null);
+                    }}
                     className={`bg-card border rounded-xl p-4 flex items-center gap-3 transition-all ${
                       catDragOverId === cat.id
                         ? "border-primary bg-primary/10"
@@ -680,7 +704,9 @@ const AdminPage = () => {
                     <span className="text-xs text-body-desc w-5 text-center shrink-0">{index + 1}</span>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-title">{cat.name}</p>
-                      <p className="text-xs text-body-desc mt-0.5">{cat.icon} · {toolCount} 个工具</p>
+                      <p className="text-xs text-body-desc mt-0.5">
+                        {cat.icon} · {toolCount} 个工具
+                      </p>
                     </div>
                     <div className="flex items-center gap-1">
                       <button onClick={() => setCatForm({ open: true, cat })} className="p-1.5 rounded-lg hover:bg-hover-bg cursor-pointer">
@@ -697,34 +723,24 @@ const AdminPage = () => {
           </div>
         )}
 
-        {/* Popular Tab */}
         {tab === "popular" && (
           <PopularManager
             tools={tools}
             popularIds={popularIds}
             togglePopular={togglePopular}
             getCategoryNames={getCategoryNames}
-            onReorder={(ids) => { savePopularIds(ids); toast.success("排序已更新"); }}
+            onReorder={(ids) => {
+              savePopularIds(ids);
+              toast.success("排序已更新");
+            }}
           />
         )}
       </div>
 
-      {/* Dialogs */}
       {toolForm.open && (
-        <ToolForm
-          tool={toolForm.tool}
-          categories={categories}
-          onSave={handleSaveTool}
-          onCancel={() => setToolForm({ open: false })}
-        />
+        <ToolForm tool={toolForm.tool} categories={categories} onSave={handleSaveTool} onCancel={() => setToolForm({ open: false })} />
       )}
-      {catForm.open && (
-        <CategoryForm
-          category={catForm.cat}
-          onSave={handleSaveCategory}
-          onCancel={() => setCatForm({ open: false })}
-        />
-      )}
+      {catForm.open && <CategoryForm category={catForm.cat} onSave={handleSaveCategory} onCancel={() => setCatForm({ open: false })} />}
     </div>
   );
 };

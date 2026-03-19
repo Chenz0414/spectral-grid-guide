@@ -1,5 +1,5 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getToolsByCategory, recordRecentTool } from "@/data/mockData";
+import { getToolsByCategory, recordRecentTool, isToolEnabled } from "@/data/mockData";
 import { getDefaultCover } from "@/components/ToolCard";
 import { ToolCard } from "@/components/ToolCard";
 import { useTools, useCategories } from "@/hooks/useData";
@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useEffect } from "react";
 
-// Mock detail data per tool
 const toolDetails: Record<string, {
   rating: number;
   users: string;
@@ -64,10 +63,10 @@ export default function ToolDetailPage() {
   const tool = tools.find((t) => t.slug === slug);
 
   useEffect(() => {
-    if (tool) recordRecentTool(tool.id);
-  }, [tool?.id]);
+    if (tool && isToolEnabled(tool)) recordRecentTool(tool.id);
+  }, [tool]);
 
-  if (!tool) {
+  if (!tool || !isToolEnabled(tool)) {
     return (
       <div className="flex flex-1 items-center justify-center">
         <div className="text-center">
@@ -82,17 +81,15 @@ export default function ToolDetailPage() {
   const coverImg = tool.coverLandscape || getDefaultCover(tool.id);
   const toolCategories = categories.filter((c) => tool.categoryIds.includes(c.id));
   const relatedTools = tool.categoryIds.length > 0
-    ? getToolsByCategory(tool.categoryIds[0]).filter((t) => t.id !== tool.id).slice(0, 5)
+    ? getToolsByCategory(tool.categoryIds[0]).filter((t) => t.id !== tool.id && isToolEnabled(t)).slice(0, 5)
     : [];
 
   return (
     <div>
-      {/* Hero banner */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 hero-gradient" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
 
-        {/* Back button */}
         <div className="relative z-10 px-4 md:px-8 pt-5 pb-2">
           <button
             onClick={() => navigate(-1)}
@@ -103,10 +100,8 @@ export default function ToolDetailPage() {
           </button>
         </div>
 
-        {/* Hero content */}
         <div className="relative z-10 px-4 md:px-8 pt-6 pb-12 max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row gap-8 items-start">
-            {/* Cover image */}
             <div className="w-full md:w-[420px] shrink-0 rounded-2xl overflow-hidden border border-border/60 glow-sm">
               <div className="relative aspect-[16/10]">
                 <img src={coverImg} alt={tool.title} className="w-full h-full object-cover" />
@@ -114,7 +109,6 @@ export default function ToolDetailPage() {
               </div>
             </div>
 
-            {/* Info */}
             <div className="flex-1 min-w-0">
               <div className="flex gap-2 mb-3 flex-wrap">
                 {toolCategories.map((cat) => (
@@ -164,7 +158,7 @@ export default function ToolDetailPage() {
 
               <div className="flex gap-3">
                 <Button
-                  onClick={() => { /* TODO: 配置外部链接后跳转 */ }}
+                  onClick={() => {}}
                   className="gap-2 px-6 rounded-xl"
                 >
                   <ExternalLink size={15} />
@@ -173,7 +167,9 @@ export default function ToolDetailPage() {
                 <Button
                   variant="outline"
                   className="gap-2 px-6 rounded-xl"
-                  onClick={() => { navigator.clipboard?.writeText(tool.url || window.location.href); }}
+                  onClick={() => {
+                    navigator.clipboard?.writeText(tool.url || window.location.href);
+                  }}
                 >
                   分享工具
                 </Button>
@@ -183,9 +179,7 @@ export default function ToolDetailPage() {
         </div>
       </div>
 
-      {/* Content sections */}
       <div className="max-w-6xl mx-auto px-4 md:px-8 pb-16">
-        {/* Highlights */}
         <section className="mb-12">
           <h2 className="text-lg font-bold text-title mb-5 flex items-center gap-2">
             <div className="w-1 h-5 rounded-full bg-gradient-to-b from-primary to-glow-secondary" />
@@ -210,7 +204,6 @@ export default function ToolDetailPage() {
           </div>
         </section>
 
-        {/* Features */}
         <section className="mb-12">
           <h2 className="text-lg font-bold text-title mb-5 flex items-center gap-2">
             <div className="w-1 h-5 rounded-full bg-gradient-to-b from-primary to-glow-secondary" />
@@ -228,7 +221,6 @@ export default function ToolDetailPage() {
           </div>
         </section>
 
-        {/* Related tools */}
         {relatedTools.length > 0 && (
           <section>
             <h2 className="text-lg font-bold text-title mb-5 flex items-center gap-2">

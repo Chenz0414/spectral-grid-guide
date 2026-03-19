@@ -5,9 +5,9 @@ import {
   getCategories,
   getPopularIds,
   getRecentIds,
-  getToolsByCategory,
   Tool,
   CategoryWithTools,
+  isToolEnabled,
 } from "@/data/mockData";
 
 export function useTools() {
@@ -29,8 +29,12 @@ export function useRecentIds() {
 export function usePopularTools(): Tool[] {
   const tools = useTools();
   const popularIds = usePopularIds();
+
   return useMemo(
-    () => popularIds.map((id) => tools.find((t) => t.id === id)).filter(Boolean) as Tool[],
+    () =>
+      popularIds
+        .map((id) => tools.find((t) => t.id === id))
+        .filter((tool): tool is Tool => Boolean(tool && isToolEnabled(tool))),
     [tools, popularIds]
   );
 }
@@ -38,8 +42,12 @@ export function usePopularTools(): Tool[] {
 export function useRecentTools(): Tool[] {
   const tools = useTools();
   const recentIds = useRecentIds();
+
   return useMemo(
-    () => recentIds.map((id) => tools.find((t) => t.id === id)).filter(Boolean) as Tool[],
+    () =>
+      recentIds
+        .map((id) => tools.find((t) => t.id === id))
+        .filter((tool): tool is Tool => Boolean(tool && isToolEnabled(tool))),
     [tools, recentIds]
   );
 }
@@ -47,11 +55,15 @@ export function useRecentTools(): Tool[] {
 export function useCategoriesWithTools(): CategoryWithTools[] {
   const tools = useTools();
   const categories = useCategories();
+
   return useMemo(
-    () => categories.map((cat) => ({
-      ...cat,
-      tools: tools.filter((t) => t.categoryIds.includes(cat.id)),
-    })),
+    () =>
+      categories
+        .map((cat) => ({
+          ...cat,
+          tools: tools.filter((t) => t.categoryIds.includes(cat.id) && isToolEnabled(t)),
+        }))
+        .filter((cat) => cat.tools.length > 0),
     [tools, categories]
   );
 }

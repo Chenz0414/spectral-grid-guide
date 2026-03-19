@@ -1,21 +1,29 @@
 import { Search, Sparkles } from "lucide-react";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Tool, getTools, recordRecentTool } from "@/data/mockData";
+import { Tool, recordRecentTool, isToolEnabled } from "@/data/mockData";
+import { useTools } from "@/hooks/useData";
 
 export function HeroSection() {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const allTools = useTools();
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return [];
-    const allTools = getTools();
-    return allTools.filter((t) =>
-      t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q) || t.tags.some((tag) => tag.toLowerCase().includes(q))
-    ).slice(0, 8);
-  }, [query]);
+
+    return allTools
+      .filter(
+        (t) =>
+          isToolEnabled(t) &&
+          (t.title.toLowerCase().includes(q) ||
+            t.description.toLowerCase().includes(q) ||
+            t.tags.some((tag) => tag.toLowerCase().includes(q)))
+      )
+      .slice(0, 8);
+  }, [allTools, query]);
 
   useEffect(() => {
     setOpen(results.length > 0 && query.trim().length > 0);
@@ -49,7 +57,7 @@ export function HeroSection() {
   return (
     <section className="relative px-4 md:px-8 pt-12 pb-10 md:pt-20 md:pb-14 hero-gradient overflow-visible">
       <div className="absolute top-0 left-1/4 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" />
-      <div className="absolute top-10 right-1/4 w-56 h-56 bg-glow-secondary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" style={{ animationDelay: '1.5s' }} />
+      <div className="absolute top-10 right-1/4 w-56 h-56 bg-glow-secondary/5 rounded-full blur-3xl animate-glow-pulse pointer-events-none" style={{ animationDelay: "1.5s" }} />
 
       <div className="relative max-w-3xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-card-secondary/80 border border-border/50 mb-6 glass">
@@ -64,9 +72,10 @@ export function HeroSection() {
           Rita 为你精选数百款优质 AI 工具，助力工作效率提升
         </p>
 
-        <div className="relative mx-auto group" style={{ maxWidth: '800px' }} ref={wrapperRef}>
-          <div className="absolute -inset-1 rounded-2xl blur-lg opacity-60 dark:opacity-40"
-            style={{ background: 'linear-gradient(135deg, rgba(82,82,229,0.35), rgba(111,214,180,0.35))' }}
+        <div className="relative mx-auto group" style={{ maxWidth: "800px" }} ref={wrapperRef}>
+          <div
+            className="absolute -inset-1 rounded-2xl blur-lg opacity-60 dark:opacity-40"
+            style={{ background: "linear-gradient(135deg, rgba(82,82,229,0.35), rgba(111,214,180,0.35))" }}
           />
           <div className="relative p-[1.5px] rounded-xl search-border-animate overflow-visible">
             <div className="relative rounded-[10px] bg-card/90 backdrop-blur-xl">
@@ -76,7 +85,9 @@ export function HeroSection() {
                 placeholder="搜索 AI 工具..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onFocus={() => { if (results.length > 0) setOpen(true); }}
+                onFocus={() => {
+                  if (results.length > 0) setOpen(true);
+                }}
                 className="w-full pl-11 pr-4 py-3.5 rounded-[10px] bg-transparent text-title text-sm placeholder:text-body-desc outline-none ring-0 border-none shadow-none transition-all duration-300"
               />
             </div>

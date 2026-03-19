@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getToolsByCategory } from "@/data/mockData";
-import { useCategories } from "@/hooks/useData";
+import { useCategories, useTools } from "@/hooks/useData";
 import { HeroSection } from "@/components/HeroSection";
 import { ToolCard } from "@/components/ToolCard";
+import { isToolEnabled } from "@/data/mockData";
 
 const categoryMeta: Record<string, { title: string; description: string; seoHeading: string; seoParagraphs: string[] }> = {
   "ai-office": {
@@ -50,15 +50,19 @@ const categoryMeta: Record<string, { title: string; description: string; seoHead
 const CategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
   const categories = useCategories();
+  const tools = useTools();
 
   const category = useMemo(
     () => categories.find((c) => c.id === categoryId),
     [categoryId, categories]
   );
 
-  const tools = useMemo(
-    () => categoryId ? getToolsByCategory(categoryId) : [],
-    [categoryId]
+  const categoryTools = useMemo(
+    () =>
+      categoryId
+        ? tools.filter((tool) => tool.categoryIds.includes(categoryId) && isToolEnabled(tool))
+        : [],
+    [categoryId, tools]
   );
 
   const meta = categoryId ? categoryMeta[categoryId] : null;
@@ -87,7 +91,7 @@ const CategoryPage = () => {
       </section>
       <section className="px-4 md:px-8">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-          {tools.map((tool) => (
+          {categoryTools.map((tool) => (
             <ToolCard key={tool.id} tool={tool} />
           ))}
         </div>

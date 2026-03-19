@@ -10,6 +10,7 @@ export interface Tool {
   url: string;
   coverType: CoverType;
   categoryIds: string[];
+  enabled?: boolean;
   coverLandscape?: string;
   coverSquare?: string;
 }
@@ -98,7 +99,7 @@ const defaultRecentIds = ["1", "11", "23", "29", "37", "45"];
 // --- localStorage helpers ---
 
 const DATA_VERSION_KEY = "rita_data_version";
-const CURRENT_VERSION = 3; // bump to force refresh of default data
+const CURRENT_VERSION = 3;
 
 function loadJSON<T>(key: string, fallback: T): T {
   try {
@@ -110,6 +111,17 @@ function loadJSON<T>(key: string, fallback: T): T {
 
 function saveJSON<T>(key: string, data: T) {
   localStorage.setItem(key, JSON.stringify(data));
+}
+
+function normalizeTool(tool: Tool): Tool {
+  return {
+    ...tool,
+    enabled: tool.enabled ?? true,
+  };
+}
+
+export function isToolEnabled(tool: Tool): boolean {
+  return tool.enabled !== false;
 }
 
 // Migration: clear stale data when version changes
@@ -124,7 +136,7 @@ if (storedVersion < CURRENT_VERSION) {
 
 // --- State management ---
 
-let _tools: Tool[] = loadJSON(STORAGE_KEY_TOOLS, defaultTools);
+let _tools: Tool[] = loadJSON(STORAGE_KEY_TOOLS, defaultTools).map(normalizeTool);
 let _categories: Category[] = loadJSON(STORAGE_KEY_CATEGORIES, defaultCategories);
 let _popularIds: string[] = loadJSON(STORAGE_KEY_POPULAR, defaultPopularIds);
 let _recentIds: string[] = loadJSON(STORAGE_KEY_RECENT, defaultRecentIds);
@@ -150,15 +162,19 @@ export function getToolById(id: string): Tool | undefined {
 }
 
 export function getToolsByCategory(categoryId: string): Tool[] {
-  return _tools.filter((t) => t.categoryIds.includes(categoryId));
+  return _tools.filter((t) => t.categoryIds.includes(categoryId) && isToolEnabled(t));
 }
 
 export function getPopularTools(): Tool[] {
-  return _popularIds.map((id) => _tools.find((t) => t.id === id)).filter(Boolean) as Tool[];
+  return _popularIds
+    .map((id) => _tools.find((t) => t.id === id))
+    .filter((tool): tool is Tool => Boolean(tool && isToolEnabled(tool)));
 }
 
 export function getRecentTools(): Tool[] {
-  return _recentIds.map((id) => _tools.find((t) => t.id === id)).filter(Boolean) as Tool[];
+  return _recentIds
+    .map((id) => _tools.find((t) => t.id === id))
+    .filter((tool): tool is Tool => Boolean(tool && isToolEnabled(tool)));
 }
 
 // Legacy compat: categories with tools
@@ -167,17 +183,19 @@ export interface CategoryWithTools extends Category {
 }
 
 export function getCategoriesWithTools(): CategoryWithTools[] {
-  return _categories.map((cat) => ({
-    ...cat,
-    tools: getToolsByCategory(cat.id),
-  }));
+  return _categories
+    .map((cat) => ({
+      ...cat,
+      tools: getToolsByCategory(cat.id),
+    }))
+    .filter((cat) => cat.tools.length > 0);
 }
 
 // --- Mutations ---
 
 export function saveTools(tools: Tool[]) {
-  _tools = tools;
-  saveJSON(STORAGE_KEY_TOOLS, tools);
+  _tools = tools.map(normalizeTool);
+  saveJSON(STORAGE_KEY_TOOLS, _tools);
   notify();
 }
 
@@ -207,13 +225,14 @@ export function recordRecentTool(toolId: string) {
 }
 
 export function addTool(tool: Tool) {
-  _tools = [..._tools, tool];
+  _tools = [..._tools, normalizeTool(tool)];
   saveJSON(STORAGE_KEY_TOOLS, _tools);
   notify();
 }
 
 export function updateTool(tool: Tool) {
-  _tools = _tools.map((t) => (t.id === tool.id ? tool : t));
+  const normalizedTool = normalizeTool(tool);
+  _tools = _tools.map((t) => (t.id === normalizedTool.id ? normalizedTool : t));
   saveJSON(STORAGE_KEY_TOOLS, _tools);
   notify();
 }
@@ -242,7 +261,6 @@ export function updateCategory(cat: Category) {
 
 export function deleteCategory(id: string) {
   _categories = _categories.filter((c) => c.id !== id);
-  // Remove category from tools
   _tools = _tools.map((t) => ({ ...t, categoryIds: t.categoryIds.filter((cid) => cid !== id) }));
   saveJSON(STORAGE_KEY_CATEGORIES, _categories);
   saveJSON(STORAGE_KEY_TOOLS, _tools);
@@ -250,7 +268,7 @@ export function deleteCategory(id: string) {
 }
 
 export function resetToDefaults() {
-  _tools = defaultTools;
+  _tools = defaultTools.map(normalizeTool);
   _categories = defaultCategories;
   _popularIds = defaultPopularIds;
   _recentIds = defaultRecentIds;
